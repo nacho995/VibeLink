@@ -1,8 +1,79 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="m 105.50037,281.60863 c -2.70293,0 -5.00091,-0.90042 -6.893127,-2.70209 -1.892214,-1.84778 -2.837901,-4.04181 -2.837901,-6.58209 0,-2.58722 0.945687,-4.80389 2.837901,-6.65167 1.892217,-1.84778 4.190197,-2.77167 6.893127,-2.77167 2.74819,0 5.06798,0.92389 6.96019,2.77167 1.93749,1.84778 2.90581,4.06445 2.90581,6.65167 0,2.54028 -0.96832,4.73431 -2.90581,6.58209 -1.89221,1.80167 -4.212,2.70209 -6.96019,2.70209 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 213.56111,280.08446 H 195.99044 L 149.69953,207.0544 c -1.17121,-1.84778 -2.14037,-3.76515 -2.90581,-5.75126 h -0.40578 c 0.36051,2.12528 0.54076,6.67515 0.54076,13.6496 v 65.13172 h -15.54349 v -99.36009 h 18.71925 l 44.7374,71.29798 c 1.89222,2.95695 3.1087,4.98917 3.64945,6.09751 h 0.26996 c -0.45021,-2.6325 -0.67573,-7.09015 -0.67573,-13.37293 v -64.02256 h 15.47557 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="m 289.25134,280.08446 h -54.40052 v -99.36009 h 52.23835 v 13.99669 h -36.15411 v 28.13085 h 33.31621 v 13.9271 h -33.31621 v 29.37835 h 38.31628 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 366.56466,194.72106 H 338.7222 v 85.3634 h -16.08423 v -85.3634 h -27.77455 v -13.99669 h 71.70124 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradiente para la V (Primary - Rojo Netflix) -->
+    <linearGradient id="vGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff4757"/>
+      <stop offset="100%" style="stop-color:#e94560"/>
+    </linearGradient>
+    
+    <!-- Gradiente para la I (Secondary - Cyan PlayStation) -->
+    <linearGradient id="iGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#0099cc"/>
+    </linearGradient>
+    
+    <!-- Gradiente para la B (Accent - Verde Xbox) -->
+    <linearGradient id="bGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7bed9f"/>
+      <stop offset="100%" style="stop-color:#2ed573"/>
+    </linearGradient>
+    
+    <!-- Gradiente para la E (AccentAlt - Morado) -->
+    <linearGradient id="eGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    
+    <!-- Sombra -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- Letras VIBE centradas y más grandes -->
+  <g filter="url(#shadow)" transform="translate(0, -20)">
+    
+    <!-- Letra V -->
+    <path d="M 55 150 L 110 310 L 165 150 L 128 150 L 110 230 L 92 150 Z" 
+          fill="url(#vGradient)"/>
+    
+    <!-- Letra I con punto -->
+    <rect x="180" y="150" width="36" height="160" rx="6" fill="url(#iGradient)"/>
+    <circle cx="198" cy="118" r="22" fill="url(#iGradient)"/>
+    
+    <!-- Letra B -->
+    <path d="M 235 150 L 235 310 L 300 310 
+             C 338 310 350 285 350 265 
+             C 350 245 332 230 318 226
+             C 332 222 345 205 345 185 
+             C 345 155 320 150 290 150 Z
+             M 272 180 L 295 180 
+             C 315 180 318 195 318 205 
+             C 318 215 310 225 290 225 L 272 225 Z
+             M 272 250 L 300 250 
+             C 322 250 322 268 322 278 
+             C 322 288 315 285 300 285 L 272 285 Z" 
+          fill="url(#bGradient)"/>
+    
+    <!-- Letra E -->
+    <path d="M 370 150 L 370 310 L 440 310 L 440 280 L 406 280 
+             L 406 242 L 435 242 L 435 212 L 406 212 
+             L 406 180 L 440 180 L 440 150 Z" 
+          fill="url(#eGradient)"/>
+    
+  </g>
+  
+  <!-- LINK debajo -->
+  <text x="228" y="365" 
+        font-family="Arial Black, Arial, sans-serif" 
+        font-size="42" 
+        font-weight="900" 
+        fill="#ffffff" 
+        text-anchor="middle"
+        letter-spacing="6">LINK</text>
+  
+  <!-- Línea decorativa -->
+  <rect x="130" y="385" width="196" height="4" rx="2" fill="url(#vGradient)"/>
+  
 </svg>

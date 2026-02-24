@@ -4,52 +4,209 @@
              xmlns:models="clr-namespace:VibeLink.App.Models"
              x:Class="VibeLink.App.Views.ChatPage"
              Title="{Binding MatchUsername}"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}">
 
-    <Grid RowDefinitions="*,Auto" Padding="10">
+    <Grid RowDefinitions="Auto,*,Auto">
 
-        <!-- Mensajes -->
-        <CollectionView ItemsSource="{Binding Messages}"
+        <!-- Header del chat -->
+        <Border Grid.Row="0"
+                BackgroundColor="{StaticResource CardBackground}"
+                Stroke="{StaticResource BorderColor}"
+                StrokeThickness="0,0,0,1"
+                Padding="15,12">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                
+                <!-- Avatar del match -->
+                <Border 
+                    BackgroundColor="{StaticResource Surface}"
+                    StrokeShape="RoundRectangle 25"
+                    Stroke="{StaticResource Primary}"
+                    StrokeThickness="2"
+                    WidthRequest="50"
+                    HeightRequest="50">
+                    <Label 
+                        Text="{Binding MatchInitial}"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Primary}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                </Border>
+
+                <!-- Info del match -->
+                <VerticalStackLayout Grid.Column="1" Margin="12,0,0,0" VerticalOptions="Center" Spacing="2">
+                    <Label 
+                        Text="{Binding MatchUsername}"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"/>
+                    <HorizontalStackLayout Spacing="6">
+                        <Border BackgroundColor="{StaticResource Success}" 
+                                StrokeShape="RoundRectangle 4" 
+                                WidthRequest="8" 
+                                HeightRequest="8"
+                                Stroke="Transparent"/>
+                        <Label 
+                            Text="{Binding CompatibilityText}"
+                            FontSize="12"
+                            TextColor="{StaticResource TextSecondary}"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Badge de compatibilidad -->
+                <Border Grid.Column="2"
+                        BackgroundColor="{StaticResource Primary}"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="Transparent"
+                        Padding="12,6"
+                        VerticalOptions="Center">
+                    <Label 
+                        Text="{Binding CompatibilityPercent, StringFormat='{0}% Match'}"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        TextColor="White"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Lista de mensajes -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Messages}"
                         x:Name="MessagesCollection"
-                        VerticalOptions="Fill">
+                        VerticalOptions="Fill"
+                        Margin="10,5">
+            
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="15">
+                    <Border 
+                        BackgroundColor="{StaticResource Surface}"
+                        StrokeShape="RoundRectangle 40"
+                        Stroke="{StaticResource BorderColor}"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        HorizontalOptions="Center">
+                        <Label Text="!" FontSize="40" TextColor="{StaticResource Primary}" 
+                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Border>
+                    <Label 
+                        Text="¡Es tu primer mensaje!"
+                        FontSize="18"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource TextPrimary}"
+                        HorizontalOptions="Center"/>
+                    <Label 
+                        Text="Rompe el hielo y empieza a chatear"
+                        FontSize="14"
+                        TextColor="{StaticResource TextSecondary}"
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:MessageChat">
-                    <VerticalStackLayout Padding="5,3">
-                        <Border BackgroundColor="#16213e"
-                                StrokeShape="RoundRectangle 12"
-                                Stroke="Transparent"
-                                Padding="12,8"
-                                HorizontalOptions="Start"
-                                MaximumWidthRequest="280">
-                            <VerticalStackLayout Spacing="2">
-                                <Label Text="{Binding Message}"
-                                       TextColor="White" FontSize="14" />
-                                <Label Text="{Binding Date, StringFormat='{0:HH:mm}'}"
-                                       TextColor="#556677" FontSize="10"
-                                       HorizontalOptions="End" />
+                    <Grid Padding="5,4">
+                        <!-- Mensaje recibido (izquierda) -->
+                        <Border 
+                            BackgroundColor="{StaticResource Surface}"
+                            StrokeShape="RoundRectangle 16,16,16,4"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1"
+                            Padding="14,10"
+                            HorizontalOptions="Start"
+                            MaximumWidthRequest="280"
+                            IsVisible="{Binding IsFromOther}">
+                            <VerticalStackLayout Spacing="4">
+                                <Label 
+                                    Text="{Binding Message}"
+                                    TextColor="{StaticResource TextPrimary}" 
+                                    FontSize="14"
+                                    LineBreakMode="WordWrap"/>
+                                <Label 
+                                    Text="{Binding Date, StringFormat='{0:HH:mm}'}"
+                                    TextColor="{StaticResource TextMuted}" 
+                                    FontSize="10"
+                                    HorizontalOptions="Start"/>
                             </VerticalStackLayout>
                         </Border>
-                    </VerticalStackLayout>
+
+                        <!-- Mensaje enviado (derecha) -->
+                        <Border 
+                            BackgroundColor="{StaticResource Primary}"
+                            StrokeShape="RoundRectangle 16,16,4,16"
+                            Stroke="Transparent"
+                            Padding="14,10"
+                            HorizontalOptions="End"
+                            MaximumWidthRequest="280"
+                            IsVisible="{Binding IsFromMe}">
+                            <VerticalStackLayout Spacing="4">
+                                <Label 
+                                    Text="{Binding Message}"
+                                    TextColor="White" 
+                                    FontSize="14"
+                                    LineBreakMode="WordWrap"/>
+                                <HorizontalStackLayout HorizontalOptions="End" Spacing="4">
+                                    <Label 
+                                        Text="{Binding Date, StringFormat='{0:HH:mm}'}"
+                                        TextColor="#FFFFFFAA" 
+                                        FontSize="10"/>
+                                    <Label 
+                                        Text="R"
+                                        TextColor="#FFFFFFAA" 
+                                        FontSize="10"
+                                        IsVisible="{Binding IsRead}"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Barra de envío -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10"
-              Padding="5,10,5,5">
-            <Border BackgroundColor="#16213e" Stroke="#0f3460"
-                    StrokeShape="RoundRectangle 25" Padding="12,5">
-                <Entry Text="{Binding NewMessage}" TextColor="White"
-                       Placeholder="Escribe un mensaje..."
-                       PlaceholderColor="#556677"
-                       ReturnCommand="{Binding SendCommand}" />
-            </Border>
+        <!-- Barra de envío de mensaje -->
+        <Border Grid.Row="2"
+                BackgroundColor="{StaticResource CardBackground}"
+                Stroke="{StaticResource BorderColor}"
+                StrokeThickness="0,1,0,0"
+                Padding="12,10">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                
+                <!-- Campo de texto -->
+                <Border 
+                    BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 25"
+                    StrokeThickness="1"
+                    Padding="18,8">
+                    <Entry 
+                        Text="{Binding NewMessage}" 
+                        TextColor="{StaticResource TextPrimary}"
+                        Placeholder="Escribe un mensaje..."
+                        PlaceholderColor="{StaticResource TextMuted}"
+                        ReturnCommand="{Binding SendCommand}"
+                        BackgroundColor="Transparent"
+                        FontSize="14"/>
+                </Border>
 
-            <Button Grid.Column="1" Text="Enviar"
-                    Command="{Binding SendCommand}"
-                    BackgroundColor="#e94560" TextColor="White"
-                    CornerRadius="25" WidthRequest="80"
-                    FontAttributes="Bold" FontSize="13" />
-        </Grid>
+                <!-- Botón enviar -->
+                <Border Grid.Column="1"
+                        BackgroundColor="{StaticResource Primary}"
+                        StrokeShape="RoundRectangle 25"
+                        Stroke="Transparent"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        Shadow="{Shadow Brush={StaticResource Primary}, Opacity=0.3, Radius=10, Offset='0,4'}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SendCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label 
+                        Text=">"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </ContentPage>

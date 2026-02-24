@@ -25,12 +25,22 @@ public static class MauiProgram
         builder.Services.AddSingleton(sp =>
         {
             var handler = new HttpClientHandler();
+            
 #if DEBUG
+            // En desarrollo, aceptar certificados self-signed y usar localhost
             handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+            var baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
+                ? "http://10.0.2.2:5093/"  // Android Emulator -> localhost
+                : "http://localhost:5093/"; // iOS Simulator / Mac
+#else
+            // En producción, usar la URL de Fly.io
+            var baseUrl = "https://vibelink-api.fly.dev/";
 #endif
+            
             return new HttpClient(handler)
             {
-                BaseAddress = new Uri("http://localhost:5093/")
+                BaseAddress = new Uri(baseUrl),
+                Timeout = TimeSpan.FromSeconds(30)
             };
         });
 
@@ -39,6 +49,7 @@ public static class MauiProgram
         // ===== VIEWMODELS =====
         builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<RegisterViewModel>();
+        builder.Services.AddTransient<OnboardingViewModel>();
         builder.Services.AddTransient<SwipeViewModel>();
         builder.Services.AddTransient<ContentViewModel>();
         builder.Services.AddTransient<MatchesViewModel>();
@@ -49,6 +60,7 @@ public static class MauiProgram
         // ===== PAGES =====
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();
+        builder.Services.AddTransient<OnboardingPage>();
         builder.Services.AddTransient<SwipePage>();
         builder.Services.AddTransient<ContentSwipePage>();
         builder.Services.AddTransient<MatchesPage>();

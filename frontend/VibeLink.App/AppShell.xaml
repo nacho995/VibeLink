@@ -24,8 +24,15 @@
         Route="LoginPage"
         Shell.TabBarIsVisible="False" />
 
-    <!-- Pantallas principales con tabs (después del login) -->
-    <TabBar Route="HomePage">
+    <!-- Onboarding: elegir gustos (sin tabs, pantalla completa) -->
+    <ShellContent
+        Title="Onboarding"
+        ContentTemplate="{DataTemplate views:OnboardingPage}"
+        Route="OnboardingPage"
+        Shell.TabBarIsVisible="False" />
+
+    <!-- Pantallas principales con tabs (después del login + onboarding) -->
+    <TabBar Route="main">
 
         <ShellContent
             Title="Descubrir"

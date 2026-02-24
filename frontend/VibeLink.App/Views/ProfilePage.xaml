@@ -3,82 +3,237 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VibeLink.App.Views.ProfilePage"
              Title="Mi Perfil"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
 
     <ScrollView>
-        <VerticalStackLayout Padding="25" Spacing="18">
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!-- Avatar -->
-            <Border StrokeShape="RoundRectangle 60"
-                    HeightRequest="120" WidthRequest="120"
-                    HorizontalOptions="Center"
-                    StrokeThickness="3" Stroke="#e94560">
-                <Image Source="{Binding AvatarUrl}"
-                       Aspect="AspectFill"
-                       HeightRequest="120" WidthRequest="120" />
+            <!-- Header con efecto -->
+            <Grid Margin="0,0,0,10">
+                <BoxView BackgroundColor="{StaticResource Primary}"
+                         Opacity="0.1"
+                         HeightRequest="180"
+                         Margin="-20,-20,-20,0"
+                         VerticalOptions="Start"/>
+                
+                <VerticalStackLayout Spacing="12" Margin="0,20,0,0">
+                    <!-- Avatar grande -->
+                    <Border StrokeShape="RoundRectangle 50"
+                            HeightRequest="110" 
+                            WidthRequest="110"
+                            HorizontalOptions="Center"
+                            StrokeThickness="3" 
+                            Stroke="{StaticResource Primary}"
+                            Shadow="{Shadow Brush={StaticResource Primary}, Opacity=0.4, Radius=20}">
+                        <Image Source="{Binding AvatarUrl}"
+                               Aspect="AspectFill"
+                               HeightRequest="110" 
+                               WidthRequest="110">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,110,110" CornerRadius="50"/>
+                            </Image.Clip>
+                        </Image>
+                    </Border>
+
+                    <!-- Username -->
+                    <Label Text="{Binding Username}" 
+                           FontSize="26" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}" 
+                           HorizontalOptions="Center"/>
+                    
+                    <!-- Email -->
+                    <Label Text="{Binding Email}" 
+                           FontSize="13" 
+                           TextColor="{StaticResource TextSecondary}"
+                           HorizontalOptions="Center"/>
+
+                    <!-- Badge Premium -->
+                    <Border IsVisible="{Binding IsPremium}"
+                            BackgroundColor="Transparent"
+                            Stroke="{StaticResource PremiumGold}"
+                            StrokeThickness="2"
+                            StrokeShape="RoundRectangle 15" 
+                            Padding="15,6"
+                            HorizontalOptions="Center">
+                        <HorizontalStackLayout Spacing="6">
+                            <Label Text="*" TextColor="{StaticResource PremiumGold}" FontSize="14"/>
+                            <Label Text="PREMIUM" TextColor="{StaticResource PremiumGold}" 
+                                   FontAttributes="Bold" FontSize="12"/>
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Swipes restantes (solo si no es premium) -->
+                    <Border IsVisible="{Binding IsPremium, Converter={StaticResource InvertedBoolConverter}}"
+                            BackgroundColor="{StaticResource Surface}"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="15,8"
+                            HorizontalOptions="Center"
+                            Stroke="Transparent">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="*" TextColor="{StaticResource Primary}" FontSize="14"/>
+                            <Label Text="{Binding SwipesLeft, StringFormat='{0} swipes restantes'}"
+                                   TextColor="{StaticResource TextSecondary}" 
+                                   FontSize="13"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Estadísticas rápidas -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10" Margin="0,5,0,15">
+                <Border BackgroundColor="{StaticResource CardBackground}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="15,12">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="12" FontSize="22" FontAttributes="Bold" 
+                               TextColor="{StaticResource MovieColor}" HorizontalOptions="Center"/>
+                        <Label Text="Películas" FontSize="11" 
+                               TextColor="{StaticResource TextMuted}" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" 
+                        BackgroundColor="{StaticResource CardBackground}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="15,12">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="8" FontSize="22" FontAttributes="Bold" 
+                               TextColor="{StaticResource SeriesColor}" HorizontalOptions="Center"/>
+                        <Label Text="Series" FontSize="11" 
+                               TextColor="{StaticResource TextMuted}" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" 
+                        BackgroundColor="{StaticResource CardBackground}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="15,12">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="15" FontSize="22" FontAttributes="Bold" 
+                               TextColor="{StaticResource GameColor}" HorizontalOptions="Center"/>
+                        <Label Text="Juegos" FontSize="11" 
+                               TextColor="{StaticResource TextMuted}" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Formulario de edición -->
+            <Border BackgroundColor="{StaticResource CardBackground}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="20">
+                <VerticalStackLayout Spacing="18">
+                    
+                    <Label Text="Editar Perfil" FontSize="18" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"/>
+
+                    <!-- Bio -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Bio" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        <Border BackgroundColor="{StaticResource Surface}" 
+                                Stroke="{StaticResource BorderColor}" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="12">
+                            <Editor Text="{Binding Bio}" 
+                                    TextColor="{StaticResource TextPrimary}" 
+                                    HeightRequest="80"
+                                    PlaceholderColor="{StaticResource TextMuted}" 
+                                    Placeholder="Cuéntanos sobre ti y tus gustos..."/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Avatar URL -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="URL del avatar" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        <Border BackgroundColor="{StaticResource Surface}" 
+                                Stroke="{StaticResource BorderColor}" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="12,5">
+                            <Entry Text="{Binding AvatarUrl}" 
+                                   TextColor="{StaticResource TextPrimary}"
+                                   PlaceholderColor="{StaticResource TextMuted}" 
+                                   Placeholder="https://tu-imagen.com/avatar.jpg" 
+                                   Keyboard="Url"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Género -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Género" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        <Border BackgroundColor="{StaticResource Surface}" 
+                                Stroke="{StaticResource BorderColor}" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="12,5">
+                            <Picker ItemsSource="{Binding GenderOptions}"
+                                    SelectedIndex="{Binding SelectedGenderIndex}"
+                                    TextColor="{StaticResource TextPrimary}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Fecha nacimiento -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Fecha de nacimiento" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        <Border BackgroundColor="{StaticResource Surface}" 
+                                Stroke="{StaticResource BorderColor}" 
+                                StrokeShape="RoundRectangle 12" 
+                                Padding="12,5">
+                            <DatePicker Date="{Binding DateOfBirth}" 
+                                        TextColor="{StaticResource TextPrimary}"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Error -->
+                    <Border IsVisible="{Binding ShowError}"
+                            BackgroundColor="#FF475720"
+                            Stroke="{StaticResource Error}"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="12,8">
+                        <Label Text="{Binding ErrorMessage}" 
+                               TextColor="{StaticResource Error}" 
+                               FontSize="12"
+                               HorizontalTextAlignment="Center"/>
+                    </Border>
+
+                    <!-- Botón Guardar -->
+                    <Button Text="GUARDAR CAMBIOS" 
+                            Command="{Binding SaveProfileCommand}"
+                            BackgroundColor="{StaticResource Primary}" 
+                            TextColor="White" 
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CornerRadius="12" 
+                            HeightRequest="52"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            Shadow="{Shadow Brush={StaticResource Primary}, Opacity=0.3, Radius=12}"/>
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                       IsVisible="{Binding IsBusy}" 
+                                       Color="{StaticResource Primary}"/>
+                </VerticalStackLayout>
             </Border>
 
-            <!-- Username y Email (solo lectura) -->
-            <Label Text="{Binding Username}" FontSize="22" FontAttributes="Bold"
-                   TextColor="White" HorizontalOptions="Center" />
-            <Label Text="{Binding Email}" FontSize="13" TextColor="#8899aa"
-                   HorizontalOptions="Center" />
-
-            <!-- Badge Premium -->
-            <Border BackgroundColor="{Binding IsPremium, Converter={StaticResource InvertedBoolConverter}}"
-                    IsVisible="{Binding IsPremium}"
-                    StrokeShape="RoundRectangle 15" Padding="10,5"
-                    Stroke="Gold" HorizontalOptions="Center">
-                <Label Text="PREMIUM" TextColor="Gold" FontAttributes="Bold" FontSize="12" />
+            <!-- Botón Logout -->
+            <Border BackgroundColor="Transparent"
+                    Stroke="{StaticResource Error}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="0"
+                    HeightRequest="50"
+                    Margin="0,10,0,20">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                </Border.GestureRecognizers>
+                <Label Text="Cerrar Sesión" 
+                       TextColor="{StaticResource Error}"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
             </Border>
-
-            <Label Text="{Binding SwipesLeft, StringFormat='Swipes restantes: {0}'}"
-                   TextColor="#8899aa" FontSize="13" HorizontalOptions="Center" />
-
-            <BoxView HeightRequest="1" Color="#0f3460" />
-
-            <!-- Bio -->
-            <Label Text="Bio" TextColor="#8899aa" FontSize="13" />
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Editor Text="{Binding Bio}" TextColor="White" HeightRequest="80"
-                        PlaceholderColor="#556677" Placeholder="Cuéntanos sobre ti..." />
-            </Border>
-
-            <!-- Avatar URL -->
-            <Label Text="URL del avatar" TextColor="#8899aa" FontSize="13" />
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Entry Text="{Binding AvatarUrl}" TextColor="White"
-                       PlaceholderColor="#556677" Placeholder="https://..." Keyboard="Url" />
-            </Border>
-
-            <!-- Género -->
-            <Label Text="Género" TextColor="#8899aa" FontSize="13" />
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Picker ItemsSource="{Binding GenderOptions}"
-                        SelectedIndex="{Binding SelectedGenderIndex}"
-                        TextColor="White" />
-            </Border>
-
-            <!-- Fecha nacimiento -->
-            <Label Text="Fecha de nacimiento" TextColor="#8899aa" FontSize="13" />
-            <DatePicker Date="{Binding DateOfBirth}" TextColor="White" />
-
-            <!-- Error -->
-            <Label Text="{Binding ErrorMessage}" TextColor="#ff6b6b" FontSize="13"
-                   IsVisible="{Binding ShowError}" HorizontalOptions="Center" />
-
-            <!-- Guardar -->
-            <Button Text="Guardar Cambios" Command="{Binding SaveProfileCommand}"
-                    BackgroundColor="#e94560" TextColor="White" FontAttributes="Bold"
-                    CornerRadius="10" HeightRequest="50"
-                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
-
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="#e94560" />
-
-            <!-- Logout -->
-            <Button Text="Cerrar Sesión" Command="{Binding LogoutCommand}"
-                    BackgroundColor="Transparent" TextColor="#ff6b6b"
-                    FontAttributes="Bold" CornerRadius="10" HeightRequest="45" />
 
         </VerticalStackLayout>
     </ScrollView>

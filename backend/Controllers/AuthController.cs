@@ -31,7 +31,14 @@ namespace DefaultNamespace;
             {
                 return BadRequest("El usuario ya existe");
             }
-            return Ok(user);
+            return Ok(new UserResponseDTOs
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                IsPremium = user.IsPremium,
+                Swipes = user.Swipes
+            });
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)

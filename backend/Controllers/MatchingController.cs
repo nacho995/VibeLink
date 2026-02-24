@@ -29,7 +29,15 @@ public class MatchingController : ControllerBase
             int compatibilidad = _compatibilityService.CalculateCompatibility(userId, usuario.Id);
             resultados.Add(new
             {
-                Usuario = usuario,
+                Usuario = new
+                {
+                    Id = usuario.Id,
+                    Username = usuario.Username,
+                    AvatarUrl = usuario.AvatarUrl,
+                    Bio = usuario.Bio,
+                    Gender = usuario.Gender,
+                    DateOfBirth = usuario.DateOfBirth
+                },
                 Compatibilidad = compatibilidad
             });
         }

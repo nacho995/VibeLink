@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VibeLink.App.ViewModels"
+             xmlns:models="clr-namespace:VibeLink.App.Models"
+             x:Class="VibeLink.App.Views.OnboardingPage"
+             Title="Elige tus gustos"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource BackgroundDark}">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Padding="0">
+
+        <!-- HEADER -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,15" Spacing="8">
+            <!-- Título y contador -->
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="Elige lo que te gusta"
+                           FontSize="26" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"/>
+                    <Label Text="Cuantos más elijas, mejores matches tendrás"
+                           FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                </VerticalStackLayout>
+
+                <!-- Contador de likes -->
+                <Border Grid.Column="1"
+                        BackgroundColor="{StaticResource Primary}"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="Transparent"
+                        Padding="14,8"
+                        VerticalOptions="Center">
+                    <Label TextColor="White" FontAttributes="Bold" FontSize="14">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding LikedCount}"/>
+                                <Span Text=" likes"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Border>
+            </Grid>
+
+            <!-- Barra de búsqueda -->
+            <Border BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeShape="RoundRectangle 15"
+                    Padding="15,5"
+                    Margin="0,5,0,0">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label Text="Q" FontSize="16" TextColor="{StaticResource TextMuted}"
+                           VerticalOptions="Center" Margin="0,0,10,0" FontAttributes="Bold"/>
+                    <Entry Grid.Column="1"
+                           Text="{Binding SearchQuery}"
+                           Placeholder="Buscar película, serie o juego..."
+                           PlaceholderColor="{StaticResource TextMuted}"
+                           TextColor="{StaticResource TextPrimary}"
+                           BackgroundColor="Transparent"
+                           ReturnCommand="{Binding SearchCommand}"/>
+                    <Border Grid.Column="2"
+                            BackgroundColor="{StaticResource Primary}"
+                            StrokeShape="RoundRectangle 8"
+                            Stroke="Transparent"
+                            Padding="10,5"
+                            IsVisible="{Binding SearchQuery.Length}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SearchCommand}"/>
+                        </Border.GestureRecognizers>
+                        <Label Text="Buscar" FontSize="12" TextColor="White" FontAttributes="Bold"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </VerticalStackLayout>
+
+        <!-- FILTROS DE CATEGORÍA -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never"
+                    Padding="15,0" Margin="0,0,0,10">
+            <HorizontalStackLayout Spacing="10">
+                <!-- All -->
+                <Border BackgroundColor="{Binding SelectedCategory, Converter={StaticResource CategoryColorConverter}, ConverterParameter=All}"
+                        StrokeShape="RoundRectangle 20" Stroke="Transparent" Padding="18,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetCategoryCommand}" CommandParameter="All"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Todo" FontSize="13" FontAttributes="Bold" TextColor="White"/>
+                </Border>
+                <!-- Movies -->
+                <Border BackgroundColor="{Binding SelectedCategory, Converter={StaticResource CategoryColorConverter}, ConverterParameter=Movies}"
+                        StrokeShape="RoundRectangle 20" Stroke="Transparent" Padding="18,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetCategoryCommand}" CommandParameter="Movies"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Peliculas" FontSize="13" FontAttributes="Bold" TextColor="White"/>
+                </Border>
+                <!-- Series -->
+                <Border BackgroundColor="{Binding SelectedCategory, Converter={StaticResource CategoryColorConverter}, ConverterParameter=Series}"
+                        StrokeShape="RoundRectangle 20" Stroke="Transparent" Padding="18,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetCategoryCommand}" CommandParameter="Series"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Series" FontSize="13" FontAttributes="Bold" TextColor="White"/>
+                </Border>
+                <!-- Games -->
+                <Border BackgroundColor="{Binding SelectedCategory, Converter={StaticResource CategoryColorConverter}, ConverterParameter=Games}"
+                        StrokeShape="RoundRectangle 20" Stroke="Transparent" Padding="18,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SetCategoryCommand}" CommandParameter="Games"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="Juegos" FontSize="13" FontAttributes="Bold" TextColor="White"/>
+                </Border>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- RESULTADOS DE BÚSQUEDA (se muestra cuando hay búsqueda activa) -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding SearchResults}"
+                        IsVisible="{Binding IsSearching}"
+                        HeightRequest="220"
+                        Margin="0,0,0,5">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.Header>
+                <BoxView WidthRequest="15" BackgroundColor="Transparent"/>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:DiscoverContentItem">
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            StrokeShape="RoundRectangle 15"
+                            Stroke="{StaticResource BorderColor}"
+                            WidthRequest="140" HeightRequest="210">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OnboardingViewModel}}, Path=LikeContentCommand}"
+                                CommandParameter="{Binding .}"/>
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto">
+                            <Image Source="{Binding DisplayImage}" Aspect="AspectFill"
+                                   Grid.RowSpan="2"/>
+                            <!-- Overlay inferior -->
+                            <VerticalStackLayout Grid.Row="1" Padding="8,5"
+                                                 BackgroundColor="#CC1a1a2e">
+                                <Label Text="{Binding Title}" FontSize="11"
+                                       FontAttributes="Bold" TextColor="White"
+                                       LineBreakMode="TailTruncation" MaxLines="2"/>
+                                <HorizontalStackLayout Spacing="5">
+                                    <Border BackgroundColor="{Binding TypeColor}"
+                                            StrokeShape="RoundRectangle 4"
+                                            Stroke="Transparent" Padding="4,2">
+                                        <Label Text="{Binding TypeLabel}" FontSize="8"
+                                               TextColor="White" FontAttributes="Bold"/>
+                                    </Border>
+                                    <Label Text="{Binding YearText}" FontSize="10"
+                                           TextColor="{StaticResource TextMuted}"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- CONTENIDO PRINCIPAL: Carruseles por categoría -->
+        <ScrollView Grid.Row="3">
+            <VerticalStackLayout Spacing="20" Padding="0,5,0,20">
+
+                <!-- Loading -->
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   Color="{StaticResource Primary}" HeightRequest="40"/>
+
+                <!-- === PELÍCULAS === -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding Movies.Count}">
+                    <HorizontalStackLayout Padding="20,0" Spacing="8">
+                        <Border BackgroundColor="{StaticResource MovieColor}"
+                                StrokeShape="RoundRectangle 4"
+                                Stroke="Transparent" Padding="6,2" VerticalOptions="Center">
+                            <Label Text="P" FontSize="10" TextColor="White" FontAttributes="Bold"/>
+                        </Border>
+                        <Label Text="Peliculas Populares" FontSize="18" FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding Movies}" HeightRequest="260">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="15" BackgroundColor="Transparent"/>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DiscoverContentItem">
+                                <Border BackgroundColor="{StaticResource CardBackground}"
+                                        StrokeShape="RoundRectangle 15"
+                                        Stroke="{StaticResource BorderColor}"
+                                        WidthRequest="160" HeightRequest="250">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OnboardingViewModel}}, Path=LikeContentCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <Grid RowDefinitions="*,Auto">
+                                        <!-- Poster -->
+                                        <Image Source="{Binding DisplayImage}" Aspect="AspectFill"
+                                               Grid.RowSpan="2"/>
+                                        <!-- Rating badge -->
+                                        <Border BackgroundColor="#DD000000"
+                                                StrokeShape="RoundRectangle 8"
+                                                Stroke="Transparent" Padding="6,3"
+                                                HorizontalOptions="End" VerticalOptions="Start"
+                                                Margin="0,8,8,0">
+                                            <Label FontSize="11" TextColor="#FFD700" FontAttributes="Bold">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="* "/>
+                                                        <Span Text="{Binding RatingFormatted}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Border>
+                                        <!-- Info overlay -->
+                                        <VerticalStackLayout Grid.Row="1" Padding="10,6"
+                                                             BackgroundColor="#DD1a1a2e" Spacing="3">
+                                            <Label Text="{Binding Title}" FontSize="13"
+                                                   FontAttributes="Bold" TextColor="White"
+                                                   LineBreakMode="TailTruncation" MaxLines="1"/>
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="{Binding YearText}" FontSize="11"
+                                                       TextColor="{StaticResource TextSecondary}"/>
+                                                <Label Text="{Binding GenresText}" FontSize="11"
+                                                       TextColor="{StaticResource TextMuted}"
+                                                       LineBreakMode="TailTruncation"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- === SERIES === -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding Series.Count}">
+                    <HorizontalStackLayout Padding="20,0" Spacing="8">
+                        <Border BackgroundColor="{StaticResource SeriesColor}"
+                                StrokeShape="RoundRectangle 4"
+                                Stroke="Transparent" Padding="6,2" VerticalOptions="Center">
+                            <Label Text="S" FontSize="10" TextColor="White" FontAttributes="Bold"/>
+                        </Border>
+                        <Label Text="Series Populares" FontSize="18" FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding Series}" HeightRequest="260">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="15" BackgroundColor="Transparent"/>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DiscoverContentItem">
+                                <Border BackgroundColor="{StaticResource CardBackground}"
+                                        StrokeShape="RoundRectangle 15"
+                                        Stroke="{StaticResource BorderColor}"
+                                        WidthRequest="160" HeightRequest="250">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OnboardingViewModel}}, Path=LikeContentCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <Grid RowDefinitions="*,Auto">
+                                        <Image Source="{Binding DisplayImage}" Aspect="AspectFill"
+                                               Grid.RowSpan="2"/>
+                                        <Border BackgroundColor="#DD000000"
+                                                StrokeShape="RoundRectangle 8"
+                                                Stroke="Transparent" Padding="6,3"
+                                                HorizontalOptions="End" VerticalOptions="Start"
+                                                Margin="0,8,8,0">
+                                            <Label FontSize="11" TextColor="#00d4ff" FontAttributes="Bold">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="* "/>
+                                                        <Span Text="{Binding RatingFormatted}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Border>
+                                        <VerticalStackLayout Grid.Row="1" Padding="10,6"
+                                                             BackgroundColor="#DD1a1a2e" Spacing="3">
+                                            <Label Text="{Binding Title}" FontSize="13"
+                                                   FontAttributes="Bold" TextColor="White"
+                                                   LineBreakMode="TailTruncation" MaxLines="1"/>
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="{Binding YearText}" FontSize="11"
+                                                       TextColor="{StaticResource TextSecondary}"/>
+                                                <Label Text="{Binding GenresText}" FontSize="11"
+                                                       TextColor="{StaticResource TextMuted}"
+                                                       LineBreakMode="TailTruncation"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- === JUEGOS === -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding Games.Count}">
+                    <HorizontalStackLayout Padding="20,0" Spacing="8">
+                        <Border BackgroundColor="{StaticResource GameColor}"
+                                StrokeShape="RoundRectangle 4"
+                                Stroke="Transparent" Padding="6,2" VerticalOptions="Center">
+                            <Label Text="G" FontSize="10" TextColor="Black" FontAttributes="Bold"/>
+                        </Border>
+                        <Label Text="Juegos Populares" FontSize="18" FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding Games}" HeightRequest="260">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="15" BackgroundColor="Transparent"/>
+                        </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DiscoverContentItem">
+                                <Border BackgroundColor="{StaticResource CardBackground}"
+                                        StrokeShape="RoundRectangle 15"
+                                        Stroke="{StaticResource BorderColor}"
+                                        WidthRequest="160" HeightRequest="250">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OnboardingViewModel}}, Path=LikeContentCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <Grid RowDefinitions="*,Auto">
+                                        <Image Source="{Binding DisplayImage}" Aspect="AspectFill"
+                                               Grid.RowSpan="2"/>
+                                        <Border BackgroundColor="#DD000000"
+                                                StrokeShape="RoundRectangle 8"
+                                                Stroke="Transparent" Padding="6,3"
+                                                HorizontalOptions="End" VerticalOptions="Start"
+                                                Margin="0,8,8,0">
+                                            <Label FontSize="11" TextColor="#7bed9f" FontAttributes="Bold">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="* "/>
+                                                        <Span Text="{Binding RatingFormatted}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Border>
+                                        <VerticalStackLayout Grid.Row="1" Padding="10,6"
+                                                             BackgroundColor="#DD1a1a2e" Spacing="3">
+                                            <Label Text="{Binding Title}" FontSize="13"
+                                                   FontAttributes="Bold" TextColor="White"
+                                                   LineBreakMode="TailTruncation" MaxLines="1"/>
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="{Binding YearText}" FontSize="11"
+                                                       TextColor="{StaticResource TextSecondary}"/>
+                                                <Label Text="{Binding GenresText}" FontSize="11"
+                                                       TextColor="{StaticResource TextMuted}"
+                                                       LineBreakMode="TailTruncation"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- BOTTOM BAR: Mis selecciones + Continuar -->
+        <Border Grid.Row="4"
+                BackgroundColor="{StaticResource CardBackground}"
+                Stroke="{StaticResource BorderColor}"
+                StrokeThickness="0,1,0,0"
+                Padding="20,12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="15">
+                
+                <!-- Mini carrusel de items seleccionados -->
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Label Text="Tus gustos:" FontSize="12"
+                               TextColor="{StaticResource TextSecondary}"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding LikedCount}"/>
+                        <CollectionView ItemsSource="{Binding LikedItems}"
+                                        HeightRequest="40"
+                                        VerticalOptions="Center">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:DiscoverContentItem">
+                                    <Border BackgroundColor="{StaticResource Surface}"
+                                            StrokeShape="RoundRectangle 8"
+                                            Stroke="{StaticResource BorderColor}"
+                                            WidthRequest="36" HeightRequest="36">
+                                        <Image Source="{Binding DisplayImage}" Aspect="AspectFill"/>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <Label Text="Toca para elegir contenido"
+                                       FontSize="12" TextColor="{StaticResource TextMuted}"
+                                       VerticalOptions="Center"/>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Botón Continuar -->
+                <Button Grid.Column="1"
+                        Text="{Binding LikedCount, StringFormat='Continuar ({0})'}"
+                        Command="{Binding ContinueCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        CornerRadius="12"
+                        Padding="20,0"
+                        HeightRequest="45"
+                        Shadow="{Shadow Brush={StaticResource Primary}, Opacity=0.3, Radius=8, Offset='0,4'}"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

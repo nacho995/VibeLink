@@ -1,0 +1,94 @@
+# VibeLink - Production Docker Compose
+# Usage: docker-compose up -d
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: vibelink-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: vibelink
+      POSTGRES_USER: vibelink
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vibelink -d vibelink"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vibelink-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vibelink-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - VIBELINK_ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=vibelink;Username=vibelink;Password=${DB_PASSWORD}
+      - VIBELINK_Jwt__Key=${JWT_SECRET_KEY}
+      - VIBELINK_Jwt__Issuer=VibeLink
+      - VIBELINK_Jwt__Audience=VibelinkUsers
+      - VIBELINK_Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      - VIBELINK_Stripe__WebhookSecret=${STRIPE_WEBHOOK_SECRET}
+      - VIBELINK_Cors__AllowedOrigins=${CORS_ORIGINS:-https://vibelink.app}
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - vibelink-network
+
+  # Nginx Reverse Proxy (opcional, para HTTPS)
+  nginx:
+    image: nginx:alpine
+    container_name: vibelink-proxy
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./nginx/logs:/var/log/nginx
+    networks:
+      - vibelink-network
+
+  # Redis para caché (opcional, para futuro)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: vibelink-cache
+  #   restart: unless-stopped
+  #   ports:
+  #     - "127.0.0.1:6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - vibelink-network
+
+volumes:
+  postgres_data:
+    driver: local
+  # redis_data:
+  #   driver: local
+
+networks:
+  vibelink-network:
+    driver: bridge

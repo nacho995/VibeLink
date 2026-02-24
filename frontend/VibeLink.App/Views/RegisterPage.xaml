@@ -5,108 +5,285 @@
              x:Class="VibeLink.App.Views.RegisterPage"
              Title="Registro"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30"
-            Spacing="20"
-            VerticalOptions="Center">
+    <Grid>
+        <!-- Background con efectos de glow -->
+        <BoxView BackgroundColor="{StaticResource BackgroundDark}" />
+        
+        <!-- Efectos de glow decorativos -->
+        <BoxView 
+            BackgroundColor="{StaticResource Secondary}"
+            Opacity="0.08"
+            WidthRequest="280"
+            HeightRequest="280"
+            CornerRadius="140"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="0,-80,-100,0"/>
+        
+        <BoxView 
+            BackgroundColor="{StaticResource Accent}"
+            Opacity="0.06"
+            WidthRequest="200"
+            HeightRequest="200"
+            CornerRadius="100"
+            HorizontalOptions="Start"
+            VerticalOptions="End"
+            Margin="-60,0,0,-60"/>
 
-            <!-- Título -->
-            <Label
-                Text="Crear Cuenta"
-                FontSize="35"
-                FontAttributes="Bold"
-                TextColor="#e94560"
-                HorizontalOptions="Center" />
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="30"
+                Spacing="12"
+                VerticalOptions="Center"
+                MaximumWidthRequest="400">
 
-            <Label
-                Text="Únete a VibeLink"
-                FontSize="14"
-                TextColor="#8899aa"
-                HorizontalOptions="Center" />
+                <!-- Header con logo pequeño -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,0,0,5">
+                    <Label Text="V" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                    <Label Text="I" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Secondary}"/>
+                    <Label Text="B" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource Accent}"/>
+                    <Label Text="E" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource AccentAlt}"/>
+                    <Label Text="LINK" FontSize="28" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}" Margin="5,0,0,0"/>
+                </HorizontalStackLayout>
 
-            <BoxView HeightRequest="10" Color="Transparent" />
+                <!-- Badges de categorías -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Margin="0,0,0,10">
+                    <Border BackgroundColor="{StaticResource MovieColor}" 
+                            StrokeShape="RoundRectangle 6" 
+                            Padding="6,3" 
+                            Stroke="Transparent">
+                        <Label Text="MOVIES" FontSize="9" TextColor="White" FontAttributes="Bold"/>
+                    </Border>
+                    <Border BackgroundColor="{StaticResource SeriesColor}" 
+                            StrokeShape="RoundRectangle 6" 
+                            Padding="6,3"
+                            Stroke="Transparent">
+                        <Label Text="SERIES" FontSize="9" TextColor="White" FontAttributes="Bold"/>
+                    </Border>
+                    <Border BackgroundColor="{StaticResource GameColor}" 
+                            StrokeShape="RoundRectangle 6" 
+                            Padding="6,3"
+                            Stroke="Transparent">
+                        <Label Text="GAMES" FontSize="9" TextColor="Black" FontAttributes="Bold"/>
+                    </Border>
+                </HorizontalStackLayout>
 
-            <!-- Campo Username -->
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Entry
-                    Text="{Binding Username}"
-                    Placeholder="Nombre de usuario"
-                    PlaceholderColor="#556677"
-                    TextColor="White" />
-            </Border>
+                <!-- Card de Registro -->
+                <Border
+                    BackgroundColor="{StaticResource CardBackground}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="25">
+                    
+                    <VerticalStackLayout Spacing="15">
+                        
+                        <!-- Header del card -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label 
+                                Text="Crear Cuenta"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource TextPrimary}"
+                                HorizontalOptions="Center"/>
+                            <Label
+                                Text="Únete y encuentra tu match perfecto"
+                                FontSize="12"
+                                TextColor="{StaticResource TextSecondary}"
+                                HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
 
-            <!-- Campo Email -->
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Entry
-                    Text="{Binding Email}"
-                    Placeholder="Email"
-                    PlaceholderColor="#556677"
-                    TextColor="White"
-                    Keyboard="Email" />
-            </Border>
+                        <!-- Campo Username -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Nombre de usuario" FontSize="12" TextColor="{StaticResource TextSecondary}" Margin="5,0,0,0"/>
+                            <Border
+                                BackgroundColor="{StaticResource Surface}"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1"
+                                Padding="15,5">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label 
+                                        Text="@" 
+                                        FontSize="18" 
+                                        TextColor="{StaticResource Secondary}"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,10,0"/>
+                                    <Entry
+                                        Grid.Column="1"
+                                        Text="{Binding Username}"
+                                        Placeholder="gamer_pro_2024"
+                                        PlaceholderColor="{StaticResource TextMuted}"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
 
-            <!-- Campo Password -->
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Entry
-                    Text="{Binding Password}"
-                    Placeholder="Contraseña"
-                    PlaceholderColor="#556677"
-                    TextColor="White"
-                    IsPassword="True" />
-            </Border>
+                        <!-- Campo Email -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Email" FontSize="12" TextColor="{StaticResource TextSecondary}" Margin="5,0,0,0"/>
+                            <Border
+                                BackgroundColor="{StaticResource Surface}"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1"
+                                Padding="15,5">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label 
+                                        Text="M" 
+                                        FontSize="16" 
+                                        TextColor="{StaticResource Accent}"
+                                        VerticalOptions="Center"
+                                        FontAttributes="Bold"
+                                        Margin="0,0,10,0"/>
+                                    <Entry
+                                        Grid.Column="1"
+                                        Text="{Binding Email}"
+                                        Placeholder="tu@email.com"
+                                        PlaceholderColor="{StaticResource TextMuted}"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        Keyboard="Email"
+                                        BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
 
-            <!-- Campo Confirmar Password -->
-            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
-                <Entry
-                    Text="{Binding ConfirmPassword}"
-                    Placeholder="Confirmar contraseña"
-                    PlaceholderColor="#556677"
-                    TextColor="White"
-                    IsPassword="True" />
-            </Border>
+                        <!-- Campo Password -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Contraseña" FontSize="12" TextColor="{StaticResource TextSecondary}" Margin="5,0,0,0"/>
+                            <Border
+                                BackgroundColor="{StaticResource Surface}"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1"
+                                Padding="15,5">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label 
+                                        Text="*" 
+                                        FontSize="22" 
+                                        TextColor="{StaticResource Primary}"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,10,0"/>
+                                    <Entry
+                                        Grid.Column="1"
+                                        Text="{Binding Password}"
+                                        Placeholder="Min. 6 caracteres"
+                                        PlaceholderColor="{StaticResource TextMuted}"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        IsPassword="True"
+                                        BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
 
-            <!-- Mensaje de error -->
-            <Label
-                Text="{Binding ErrorMessage}"
-                TextColor="#ff6b6b"
-                FontSize="13"
-                HorizontalOptions="Center"
-                IsVisible="{Binding ShowError}" />
+                        <!-- Campo Confirmar Password -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Confirmar contraseña" FontSize="12" TextColor="{StaticResource TextSecondary}" Margin="5,0,0,0"/>
+                            <Border
+                                BackgroundColor="{StaticResource Surface}"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1"
+                                Padding="15,5">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label 
+                                        Text="*" 
+                                        FontSize="22" 
+                                        TextColor="{StaticResource AccentAlt}"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,10,0"/>
+                                    <Entry
+                                        Grid.Column="1"
+                                        Text="{Binding ConfirmPassword}"
+                                        Placeholder="Repite la contraseña"
+                                        PlaceholderColor="{StaticResource TextMuted}"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        IsPassword="True"
+                                        BackgroundColor="Transparent"/>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
 
-            <!-- Botón Registro -->
-            <Button
-                Text="Crear Cuenta"
-                Command="{Binding RegisterCommand}"
-                BackgroundColor="#e94560"
-                TextColor="White"
-                FontAttributes="Bold"
-                CornerRadius="10"
-                HeightRequest="50"
-                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+                        <!-- Mensaje de error -->
+                        <Border
+                            IsVisible="{Binding ShowError}"
+                            BackgroundColor="#FF475720"
+                            Stroke="{StaticResource Error}"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="12,8">
+                            <Label
+                                Text="{Binding ErrorMessage}"
+                                TextColor="{StaticResource Error}"
+                                FontSize="12"
+                                HorizontalTextAlignment="Center"/>
+                        </Border>
 
-            <ActivityIndicator
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}"
-                Color="#e94560" />
+                        <!-- Botón Registro -->
+                        <Button
+                            Text="CREAR MI CUENTA"
+                            Command="{Binding RegisterCommand}"
+                            BackgroundColor="{StaticResource Secondary}"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="12"
+                            HeightRequest="55"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            Shadow="{Shadow Brush={StaticResource Secondary}, Opacity=0.4, Radius=15, Offset='0,8'}"
+                            Margin="0,5,0,0"/>
 
-            <!-- Link a Login -->
-            <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="¿Ya tienes cuenta? " TextColor="#8899aa" />
-                        <Span Text="Inicia sesión" TextColor="#e94560" FontAttributes="Bold">
-                            <Span.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GoToLoginCommand}" />
-                            </Span.GestureRecognizers>
-                        </Span>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+                        <!-- Loading -->
+                        <ActivityIndicator
+                            IsRunning="{Binding IsBusy}"
+                            IsVisible="{Binding IsBusy}"
+                            Color="{StaticResource Secondary}"
+                            HeightRequest="30"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Separador -->
+                <Grid ColumnDefinitions="*,Auto,*" Margin="0,8">
+                    <BoxView Grid.Column="0" HeightRequest="1" BackgroundColor="{StaticResource BorderColor}" VerticalOptions="Center"/>
+                    <Label Grid.Column="1" Text="¿Ya tienes cuenta?" TextColor="{StaticResource TextMuted}" FontSize="12" Margin="15,0"/>
+                    <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="{StaticResource BorderColor}" VerticalOptions="Center"/>
+                </Grid>
+
+                <!-- Botón volver a Login -->
+                <Border
+                    BackgroundColor="Transparent"
+                    Stroke="{StaticResource Primary}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 12"
+                    Padding="0"
+                    HeightRequest="50">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToLoginCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label 
+                        Text="INICIAR SESIÓN"
+                        TextColor="{StaticResource Primary}"
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+                </Border>
+
+                <!-- Footer con info -->
+                <VerticalStackLayout Spacing="3" Margin="0,15,0,0">
+                    <Label
+                        Text="Al registrarte aceptas nuestros términos de uso"
+                        FontSize="10"
+                        TextColor="{StaticResource TextMuted}"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 
 </ContentPage>

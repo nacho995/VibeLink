@@ -10,6 +10,7 @@ public partial class AppShell : Shell
 
         // Rutas para navegación por código (páginas que no están en tabs)
         Routing.RegisterRoute("RegisterPage", typeof(RegisterPage));
+        Routing.RegisterRoute("OnboardingPage", typeof(OnboardingPage));
         Routing.RegisterRoute("ChatPage", typeof(ChatPage));
     }
 }

@@ -5,7 +5,6 @@
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/backend.runtimeconfig.json
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/backend.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/backend.pdb
-/home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/Microsoft.OpenApi.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -19,13 +18,7 @@
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.MvcApplicationPartsAssemblyInfo.cache
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets.build.json
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets.development.json
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets/msbuild.backend.Microsoft.AspNetCore.StaticWebAssets.props
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets/msbuild.build.backend.props
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.backend.props
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.backend.props
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets.pack.json
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/scopedcss/bundle/backend.styles.css
-/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.csproj.CopyComplete
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/refint/backend.dll
 /home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.pdb
@@ -238,3 +231,15 @@
 /Users/nachodalesio/Documents/VibeLink/backend/obj/Debug/net8.0/backend.pdb
 /Users/nachodalesio/Documents/VibeLink/backend/obj/Debug/net8.0/backend.genruntimeconfig.cache
 /Users/nachodalesio/Documents/VibeLink/backend/obj/Debug/net8.0/ref/backend.dll
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.sourcelink.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/appsettings.Production.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/HealthChecks.NpgSql.dll
+/home/nacho/Documentos/Programacion/VibeLink/backend/bin/Debug/net8.0/backend.staticwebassets.endpoints.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/rpswa.dswa.cache.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/rjimswa.dswa.cache.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets.build.json.cache
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/swae.build.ex.cache
+/home/nacho/Documentos/Programacion/VibeLink/backend/obj/Debug/net8.0/backend.csproj.Up2Date

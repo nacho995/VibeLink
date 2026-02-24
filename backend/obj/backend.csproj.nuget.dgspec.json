@@ -1,26 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nachodalesio/Documents/VibeLink/backend/backend.csproj": {}
+    "/home/nacho/Documentos/Programacion/VibeLink/backend/backend.csproj": {}
   },
   "projects": {
-    "/Users/nachodalesio/Documents/VibeLink/backend/backend.csproj": {
+    "/home/nacho/Documentos/Programacion/VibeLink/backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nachodalesio/Documents/VibeLink/backend/backend.csproj",
+        "projectUniqueName": "/home/nacho/Documentos/Programacion/VibeLink/backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "/Users/nachodalesio/Documents/VibeLink/backend/backend.csproj",
-        "packagesPath": "/Users/nachodalesio/.nuget/packages/",
-        "outputPath": "/Users/nachodalesio/Documents/VibeLink/backend/obj/",
+        "projectPath": "/home/nacho/Documentos/Programacion/VibeLink/backend/backend.csproj",
+        "packagesPath": "/home/nacho/.nuget/packages/",
+        "outputPath": "/home/nacho/Documentos/Programacion/VibeLink/backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/nachodalesio/.nuget/NuGet/NuGet.Config"
+          "/home/nacho/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "/home/nacho/.dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,23 +45,23 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "AspNetCore.HealthChecks.NpgSql": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[10.0.0, )"
-            },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[10.0.0, )"
+              "version": "[10.0.3, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[10.0.0, )"
+              "version": "[10.0.3, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
@@ -76,6 +76,10 @@
             "Stripe.net": {
               "target": "Package",
               "version": "[50.3.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[10.1.4, )"
             }
           },
           "imports": [
@@ -97,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/home/nacho/.dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

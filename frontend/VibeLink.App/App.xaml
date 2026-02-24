@@ -11,8 +11,9 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Converter disponible globalmente en toda la app -->
+            <!-- Converters disponibles globalmente en toda la app -->
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <helpers:CategoryColorConverter x:Key="CategoryColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

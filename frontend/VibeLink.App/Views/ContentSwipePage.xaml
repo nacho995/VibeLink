@@ -3,67 +3,264 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VibeLink.App.Views.ContentSwipePage"
              Title="Contenido"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
 
-    <Grid>
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                           Color="#e94560" VerticalOptions="Center" />
-
-        <!-- Sin contenido -->
-        <VerticalStackLayout IsVisible="{Binding NoMoreContent}" VerticalOptions="Center"
-                             HorizontalOptions="Center" Spacing="10">
-            <Label Text="No hay más contenido" FontSize="22" TextColor="#8899aa"
-                   HorizontalOptions="Center" />
-            <Label Text="Has visto todo el catálogo" FontSize="14" TextColor="#556677"
-                   HorizontalOptions="Center" />
-        </VerticalStackLayout>
-
-        <!-- Card de contenido -->
-        <VerticalStackLayout IsVisible="{Binding HasContent}" Padding="20" Spacing="15"
-                             VerticalOptions="Center">
-
-            <Border BackgroundColor="#16213e" Stroke="#0f3460"
-                    StrokeShape="RoundRectangle 20" Padding="0">
-                <Grid RowDefinitions="280,Auto">
-                    <Image Source="{Binding CurrentImage}" Aspect="AspectFill"
-                           HeightRequest="280">
-                        <Image.Clip>
-                            <RoundRectangleGeometry Rect="0,0,400,280" CornerRadius="20,20,0,0" />
-                        </Image.Clip>
-                    </Image>
-
-                    <!-- Badge tipo -->
-                    <Border BackgroundColor="#e94560" StrokeShape="RoundRectangle 10"
-                            Padding="8,4" Stroke="Transparent"
-                            HorizontalOptions="Start" VerticalOptions="Start"
-                            Margin="15,15,0,0">
-                        <Label Text="{Binding CurrentType}" TextColor="White"
-                               FontSize="11" FontAttributes="Bold" />
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header con filtros de categoría -->
+        <Border Grid.Row="0" 
+                BackgroundColor="{StaticResource BackgroundMedium}" 
+                Padding="15"
+                Stroke="Transparent">
+            <VerticalStackLayout Spacing="12">
+                <!-- Título -->
+                <Label Text="Califica tu contenido" 
+                       FontSize="20" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalOptions="Center"/>
+                
+                <!-- Filtros de categoría -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Border BackgroundColor="{Binding IsMoviesSelected, Converter={StaticResource BoolToColorConverter}, ConverterParameter=MovieColor}"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="18,10"
+                            Stroke="Transparent">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectMoviesCommand}"/>
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="6">
+                            <Label Text="*" TextColor="White" FontSize="14"/>
+                            <Label Text="Películas" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                        </HorizontalStackLayout>
                     </Border>
+                    
+                    <Border BackgroundColor="{StaticResource Surface}"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="18,10"
+                            Stroke="Transparent">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectSeriesCommand}"/>
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="6">
+                            <Label Text="*" TextColor="{StaticResource SeriesColor}" FontSize="14"/>
+                            <Label Text="Series" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                    
+                    <Border BackgroundColor="{StaticResource Surface}"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="18,10"
+                            Stroke="Transparent">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectGamesCommand}"/>
+                        </Border.GestureRecognizers>
+                        <HorizontalStackLayout Spacing="6">
+                            <Label Text="*" TextColor="{StaticResource GameColor}" FontSize="14"/>
+                            <Label Text="Juegos" TextColor="{StaticResource TextSecondary}" FontSize="13"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
 
-                    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="6">
-                        <Label Text="{Binding CurrentTitle}" FontSize="24"
-                               FontAttributes="Bold" TextColor="White" />
-                        <Label Text="{Binding CurrentYear, StringFormat='{0}'}"
-                               FontSize="14" TextColor="#e94560" />
-                        <Label Text="{Binding CurrentGenres}" FontSize="13"
-                               TextColor="#8899aa" />
+        <!-- Contenido principal -->
+        <Grid Grid.Row="1" Padding="15">
+            
+            <!-- Loading -->
+            <VerticalStackLayout IsVisible="{Binding IsBusy}" 
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center"
+                                 Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                   Color="{StaticResource Primary}" 
+                                   HeightRequest="50"/>
+                <Label Text="Cargando contenido..." 
+                       TextColor="{StaticResource TextSecondary}"
+                       FontSize="14"/>
+            </VerticalStackLayout>
+
+            <!-- Sin contenido -->
+            <VerticalStackLayout IsVisible="{Binding NoMoreContent}" 
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center" 
+                                 Spacing="20">
+                <Border BackgroundColor="{StaticResource Surface}"
+                        StrokeShape="RoundRectangle 40"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        HorizontalOptions="Center"
+                        Stroke="Transparent">
+                    <Label Text="*" FontSize="40" TextColor="{StaticResource TextMuted}" 
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+                <Label Text="¡Increíble!" FontSize="24" FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center"/>
+                <Label Text="Has calificado todo el contenido disponible"
+                       FontSize="14" TextColor="{StaticResource TextSecondary}"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Card de contenido -->
+            <Border IsVisible="{Binding HasContent}"
+                    BackgroundColor="{StaticResource CardBackground}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 25"
+                    Padding="0"
+                    VerticalOptions="Fill"
+                    Margin="5">
+                
+                <Grid RowDefinitions="*,Auto">
+                    
+                    <!-- Poster del contenido -->
+                    <Grid>
+                        <Image Source="{Binding CurrentImage}" 
+                               Aspect="AspectFill"
+                               VerticalOptions="Fill">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,500,500" CornerRadius="25,25,0,0"/>
+                            </Image.Clip>
+                        </Image>
+                        
+                        <!-- Overlay gradiente -->
+                        <BoxView VerticalOptions="End" HeightRequest="180">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#EE000000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+
+                        <!-- Badge de tipo (película/serie/juego) -->
+                        <Border HorizontalOptions="Start" 
+                                VerticalOptions="Start"
+                                Margin="15"
+                                BackgroundColor="{Binding TypeColor}"
+                                StrokeShape="RoundRectangle 12"
+                                Padding="12,6"
+                                Stroke="Transparent"
+                                Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10}">
+                            <Label Text="{Binding CurrentType}" 
+                                   TextColor="White"
+                                   FontSize="12" 
+                                   FontAttributes="Bold"/>
+                        </Border>
+
+                        <!-- Año -->
+                        <Border HorizontalOptions="End" 
+                                VerticalOptions="Start"
+                                Margin="15"
+                                BackgroundColor="#80000000"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="10,5"
+                                Stroke="Transparent">
+                            <Label Text="{Binding CurrentYear}" 
+                                   TextColor="White"
+                                   FontSize="13" 
+                                   FontAttributes="Bold"/>
+                        </Border>
+
+                        <!-- Título sobre la imagen -->
+                        <VerticalStackLayout VerticalOptions="End" Padding="20,0,20,15" Spacing="8">
+                            <Label Text="{Binding CurrentTitle}" 
+                                   FontSize="26"
+                                   FontAttributes="Bold" 
+                                   TextColor="White"
+                                   MaxLines="2"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Info detallada -->
+                    <VerticalStackLayout Grid.Row="1" 
+                                         Padding="20,15" 
+                                         Spacing="10" 
+                                         BackgroundColor="{StaticResource CardBackground}">
+                        
+                        <!-- Géneros como tags -->
+                        <FlexLayout Wrap="Wrap" 
+                                    JustifyContent="Start" 
+                                    AlignItems="Start"
+                                    Direction="Row">
+                            <!-- Los géneros se mostrarían aquí dinámicamente -->
+                            <Border BackgroundColor="{StaticResource SurfaceVariant}"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="10,5"
+                                    Margin="0,0,8,8"
+                                    Stroke="Transparent">
+                                <Label Text="{Binding CurrentGenres}" 
+                                       FontSize="12" 
+                                       TextColor="{StaticResource TextSecondary}"/>
+                            </Border>
+                        </FlexLayout>
+
+                        <!-- Contador de personas que les gusta -->
+                        <HorizontalStackLayout Spacing="5">
+                            <Label Text="*" TextColor="{StaticResource LikeColor}" FontSize="14"/>
+                            <Label Text="2,847 personas les gusta" 
+                                   TextColor="{StaticResource TextMuted}" 
+                                   FontSize="12"/>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Grid>
             </Border>
+        </Grid>
 
-            <!-- Botones -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Margin="20,0">
-                <Button Text="Paso" Command="{Binding DislikeContentCommand}"
-                        BackgroundColor="#2d2d44" TextColor="#ff6b6b"
-                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
-                        FontSize="18" />
-                <Button Grid.Column="1" Text="Me gusta" Command="{Binding LikeContentCommand}"
-                        BackgroundColor="#e94560" TextColor="White"
-                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
-                        FontSize="18" />
-            </Grid>
+        <!-- Botones de acción -->
+        <Grid Grid.Row="2" 
+              ColumnDefinitions="*,*" 
+              ColumnSpacing="15"
+              Padding="20,15,20,30"
+              BackgroundColor="{StaticResource BackgroundDark}"
+              IsVisible="{Binding HasContent}">
+            
+            <!-- Botón PASO -->
+            <Border Grid.Column="0"
+                    BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource DislikeColor}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 16"
+                    HeightRequest="60">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DislikeContentCommand}"/>
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label Text="X" 
+                           FontSize="20" 
+                           TextColor="{StaticResource DislikeColor}"
+                           VerticalOptions="Center"/>
+                    <Label Text="PASO" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource DislikeColor}"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Border>
 
-        </VerticalStackLayout>
+            <!-- Botón ME GUSTA -->
+            <Border Grid.Column="1"
+                    BackgroundColor="{StaticResource LikeColor}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 16"
+                    HeightRequest="60"
+                    Shadow="{Shadow Brush={StaticResource LikeColor}, Opacity=0.3, Radius=15, Offset='0,5'}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LikeContentCommand}"/>
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label Text="Y" 
+                           FontSize="20" 
+                           TextColor="White"
+                           VerticalOptions="Center"/>
+                    <Label Text="ME GUSTA" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
     </Grid>
 </ContentPage>

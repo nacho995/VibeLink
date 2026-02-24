@@ -3,78 +3,273 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VibeLink.App.Views.SwipePage"
              Title="Descubrir"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
 
-    <Grid>
-        <!-- Loading -->
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                           Color="#e94560" VerticalOptions="Center" />
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                BackgroundColor="{StaticResource BackgroundMedium}" 
+                Padding="20,15"
+                Stroke="Transparent">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- Logo pequeño -->
+                <HorizontalStackLayout Spacing="3">
+                    <Label Text="VIBE" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                    <Label Text="LINK" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                </HorizontalStackLayout>
+                
+                <!-- Swipes restantes -->
+                <Border Grid.Column="2" 
+                        BackgroundColor="{StaticResource Surface}"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="12,6"
+                        Stroke="Transparent">
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="*" TextColor="{StaticResource Primary}" FontSize="14"/>
+                        <Label Text="{Binding SwipesRemaining, StringFormat='{0} swipes'}" 
+                               TextColor="{StaticResource TextSecondary}" 
+                               FontSize="12"/>
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+        </Border>
 
-        <!-- No hay más usuarios -->
-        <VerticalStackLayout IsVisible="{Binding NoMoreUsers}" VerticalOptions="Center"
-                             HorizontalOptions="Center" Spacing="10">
-            <Label Text="No hay más personas" FontSize="22" TextColor="#8899aa"
-                   HorizontalOptions="Center" />
-            <Label Text="Vuelve más tarde" FontSize="14" TextColor="#556677"
-                   HorizontalOptions="Center" />
-        </VerticalStackLayout>
+        <!-- Contenido Principal -->
+        <Grid Grid.Row="1" Padding="15">
+            
+            <!-- Loading -->
+            <VerticalStackLayout IsVisible="{Binding IsBusy}" 
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center"
+                                 Spacing="15">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="{StaticResource Primary}" HeightRequest="50"/>
+                <Label Text="Buscando personas compatibles..." 
+                       TextColor="{StaticResource TextSecondary}"
+                       FontSize="14"/>
+            </VerticalStackLayout>
 
-        <!-- Card del usuario actual -->
-        <VerticalStackLayout IsVisible="{Binding HasUsers}" Padding="20" Spacing="15"
-                             VerticalOptions="Center">
+            <!-- No hay más usuarios -->
+            <VerticalStackLayout IsVisible="{Binding NoMoreUsers}" 
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center" 
+                                 Spacing="20">
+                <Border BackgroundColor="{StaticResource Surface}"
+                        StrokeShape="RoundRectangle 50"
+                        WidthRequest="100"
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        Stroke="Transparent">
+                    <Label Text="?" FontSize="50" TextColor="{StaticResource TextMuted}" 
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+                <Label Text="No hay más personas" FontSize="22" FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center"/>
+                <Label Text="¡Vuelve más tarde o ajusta tus preferencias!"
+                       FontSize="14" TextColor="{StaticResource TextSecondary}"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                <Button Text="Actualizar" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" CornerRadius="12" Margin="0,10,0,0"
+                        Command="{Binding RefreshCommand}"/>
+            </VerticalStackLayout>
 
-            <!-- Card -->
-            <Border BackgroundColor="#16213e" Stroke="#0f3460"
-                    StrokeShape="RoundRectangle 20" Padding="0">
-                <Grid RowDefinitions="300,Auto">
-                    <!-- Foto -->
-                    <Image Source="{Binding CurrentAvatar}" Aspect="AspectFill"
-                           HeightRequest="300">
-                        <Image.Clip>
-                            <RoundRectangleGeometry Rect="0,0,400,300" CornerRadius="20,20,0,0" />
-                        </Image.Clip>
-                    </Image>
+            <!-- Card del usuario actual -->
+            <Border IsVisible="{Binding HasUsers}"
+                    BackgroundColor="{StaticResource CardBackground}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 25"
+                    Padding="0"
+                    VerticalOptions="Fill"
+                    Margin="5">
+                
+                <Grid RowDefinitions="*,Auto">
+                    
+                    <!-- Imagen del usuario -->
+                    <Grid>
+                        <Image Source="{Binding CurrentAvatar}" 
+                               Aspect="AspectFill"
+                               VerticalOptions="Fill">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,500,600" CornerRadius="25,25,0,0"/>
+                            </Image.Clip>
+                        </Image>
+                        
+                        <!-- Overlay gradiente oscuro abajo -->
+                        <BoxView VerticalOptions="End" HeightRequest="150">
+                            <BoxView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="#CC000000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </BoxView.Background>
+                        </BoxView>
+                        
+                        <!-- Barra de compatibilidad sobre la imagen -->
+                        <Border VerticalOptions="Start" 
+                                HorizontalOptions="End"
+                                Margin="15"
+                                BackgroundColor="#80000000"
+                                StrokeShape="RoundRectangle 15"
+                                Padding="12,8"
+                                Stroke="Transparent">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="*" TextColor="{StaticResource LikeColor}" FontSize="16"/>
+                                <Label Text="{Binding CurrentCompatibility, StringFormat='{0}%'}" 
+                                       TextColor="{StaticResource LikeColor}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"/>
+                                <Label Text="match" TextColor="{StaticResource TextSecondary}" FontSize="12"
+                                       VerticalOptions="End" Margin="0,0,0,2"/>
+                            </HorizontalStackLayout>
+                        </Border>
 
-                    <!-- Info -->
-                    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="8">
-                        <Label Text="{Binding CurrentUsername}" FontSize="26"
-                               FontAttributes="Bold" TextColor="White" />
-                        <Label Text="{Binding CurrentBio}" FontSize="14"
-                               TextColor="#8899aa" MaxLines="3" />
+                        <!-- Info sobre la imagen (nombre) -->
+                        <VerticalStackLayout VerticalOptions="End" Padding="20,0,20,15" Spacing="5">
+                            <Label Text="{Binding CurrentUsername}" 
+                                   FontSize="28"
+                                   FontAttributes="Bold" 
+                                   TextColor="White"/>
+                        </VerticalStackLayout>
+                    </Grid>
 
-                        <!-- Barra de compatibilidad -->
-                        <Grid ColumnDefinitions="*,Auto" Margin="0,5,0,0">
-                            <ProgressBar Progress="{Binding CurrentCompatibility, Converter={StaticResource InvertedBoolConverter}}"
-                                         ProgressColor="#e94560" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding CurrentCompatibility, StringFormat='{0}% compatible'}"
-                                   TextColor="#e94560" FontAttributes="Bold" FontSize="13"
-                                   Margin="10,0,0,0" />
-                        </Grid>
+                    <!-- Info detallada -->
+                    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="12" BackgroundColor="{StaticResource CardBackground}">
+                        
+                        <!-- Bio -->
+                        <Label Text="{Binding CurrentBio}" 
+                               FontSize="14"
+                               TextColor="{StaticResource TextSecondary}"
+                               MaxLines="3"
+                               LineBreakMode="TailTruncation"/>
+                        
+                        <!-- Tags de gustos en común -->
+                        <Label Text="Gustos en común" 
+                               FontSize="12" 
+                               TextColor="{StaticResource TextMuted}"
+                               Margin="0,5,0,0"/>
+                        
+                        <HorizontalStackLayout Spacing="8">
+                            <Border BackgroundColor="{StaticResource MovieColor}" 
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="10,6"
+                                    Stroke="Transparent"
+                                    Opacity="0.9">
+                                <Label Text="5 Movies" FontSize="11" TextColor="White" FontAttributes="Bold"/>
+                            </Border>
+                            <Border BackgroundColor="{StaticResource SeriesColor}"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="10,6"
+                                    Stroke="Transparent"
+                                    Opacity="0.9">
+                                <Label Text="3 Series" FontSize="11" TextColor="White" FontAttributes="Bold"/>
+                            </Border>
+                            <Border BackgroundColor="{StaticResource GameColor}"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="10,6"
+                                    Stroke="Transparent"
+                                    Opacity="0.9">
+                                <Label Text="8 Games" FontSize="11" TextColor="Black" FontAttributes="Bold"/>
+                            </Border>
+                        </HorizontalStackLayout>
+
                     </VerticalStackLayout>
                 </Grid>
             </Border>
 
-            <!-- Botones Like / Dislike -->
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Margin="20,0">
-                <Button Text="Nope" Command="{Binding DislikeCommand}"
-                        BackgroundColor="#2d2d44" TextColor="#ff6b6b"
-                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
-                        FontSize="18" />
-                <Button Grid.Column="1" Text="Like" Command="{Binding LikeCommand}"
-                        BackgroundColor="#e94560" TextColor="White"
-                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
-                        FontSize="18" />
-            </Grid>
-
-            <!-- Match notification -->
-            <Border IsVisible="{Binding ShowMatch}" BackgroundColor="#e94560"
-                    StrokeShape="RoundRectangle 15" Padding="15" Stroke="Transparent"
-                    HorizontalOptions="Center">
-                <Label Text="{Binding MatchMessage}" TextColor="White"
-                       FontSize="18" FontAttributes="Bold" />
+            <!-- Notificación de Match -->
+            <Border IsVisible="{Binding ShowMatch}"
+                    BackgroundColor="{StaticResource MatchColor}"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="25,20"
+                    Stroke="Transparent"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Shadow="{Shadow Brush={StaticResource MatchColor}, Opacity=0.5, Radius=30}">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Label Text="ES UN MATCH!" 
+                           FontSize="28" 
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center"/>
+                    <Label Text="{Binding MatchMessage}"
+                           FontSize="14"
+                           TextColor="#FFFFFFCC"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
             </Border>
 
-        </VerticalStackLayout>
+        </Grid>
+
+        <!-- Botones de acción -->
+        <Grid Grid.Row="2" 
+              ColumnDefinitions="*,Auto,*" 
+              ColumnSpacing="20"
+              Padding="30,15,30,30"
+              BackgroundColor="{StaticResource BackgroundDark}"
+              IsVisible="{Binding HasUsers}">
+            
+            <!-- Botón NOPE -->
+            <Border Grid.Column="0"
+                    BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource DislikeColor}"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 30"
+                    HeightRequest="65"
+                    HorizontalOptions="End"
+                    WidthRequest="65"
+                    Shadow="{Shadow Brush={StaticResource DislikeColor}, Opacity=0.2, Radius=15}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DislikeCommand}"/>
+                </Border.GestureRecognizers>
+                <Label Text="X" 
+                       FontSize="28" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource DislikeColor}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Botón SUPER LIKE (centro, más grande) -->
+            <Border Grid.Column="1"
+                    BackgroundColor="{StaticResource SuperLikeColor}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 35"
+                    HeightRequest="80"
+                    WidthRequest="80"
+                    Shadow="{Shadow Brush={StaticResource SuperLikeColor}, Opacity=0.4, Radius=20, Offset='0,5'}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SuperLikeCommand}"/>
+                </Border.GestureRecognizers>
+                <Label Text="*" 
+                       FontSize="35"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Botón LIKE -->
+            <Border Grid.Column="2"
+                    BackgroundColor="{StaticResource LikeColor}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 30"
+                    HeightRequest="65"
+                    HorizontalOptions="Start"
+                    WidthRequest="65"
+                    Shadow="{Shadow Brush={StaticResource LikeColor}, Opacity=0.3, Radius=15, Offset='0,5'}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LikeCommand}"/>
+                </Border.GestureRecognizers>
+                <Label Text="Y" 
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Border>
+        </Grid>
+
     </Grid>
 </ContentPage>

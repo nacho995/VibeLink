@@ -1,0 +1,44 @@
+# Fly.io Configuration for VibeLink Backend
+# Deploy with: fly launch (first time) or fly deploy (updates)
+
+app = "vibelink-api"
+primary_region = "mad"  # Madrid - cercano a España
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  ASPNETCORE_ENVIRONMENT = "Production"
+  ASPNETCORE_URLS = "http://+:8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true      # Para cuando no hay tráfico (ahorra dinero)
+  auto_start_machines = true     # Arranca cuando llega tráfico
+  min_machines_running = 0       # Puede bajar a 0 máquinas
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/health"
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+# Escalar automáticamente según demanda
+[http_service.machine_checks]
+  image = "flyio/tcp-check"
+  interval = "15s"
+  timeout = "3s"
+  grace_period = "5s"

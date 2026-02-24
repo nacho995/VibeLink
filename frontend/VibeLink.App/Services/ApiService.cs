@@ -168,9 +168,9 @@ public class ApiService
         }
     }
 
-    // ==================== CONTENIDO ====================
+    // ==================== CONTENIDO (legacy) ====================
 
-    /// <summary>GET /api/contentscontrollers — Obtener todo el contenido</summary>
+    /// <summary>GET /api/contentscontrollers — Obtener todo el contenido local</summary>
     public async Task<List<Content>> GetContentAsync()
     {
         await SetAuthHeader();
@@ -178,6 +178,78 @@ public class ApiService
         if (response.IsSuccessStatusCode)
             return await response.Content.ReadFromJsonAsync<List<Content>>() ?? [];
         return [];
+    }
+
+    // ==================== DISCOVER (TMDB + RAWG) ====================
+
+    /// <summary>GET /api/discover — Contenido popular de todas las categorías</summary>
+    public async Task<ContentDiscovery> GetDiscoveryAsync(int page = 1)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.GetAsync($"api/discover?page={page}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<ContentDiscovery>() ?? new();
+            return new();
+        }
+        catch { return new(); }
+    }
+
+    /// <summary>GET /api/discover/movies — Películas populares</summary>
+    public async Task<List<DiscoverContentItem>> GetPopularMoviesAsync(int page = 1)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.GetAsync($"api/discover/movies?page={page}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<List<DiscoverContentItem>>() ?? [];
+            return [];
+        }
+        catch { return []; }
+    }
+
+    /// <summary>GET /api/discover/series — Series populares</summary>
+    public async Task<List<DiscoverContentItem>> GetPopularSeriesAsync(int page = 1)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.GetAsync($"api/discover/series?page={page}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<List<DiscoverContentItem>>() ?? [];
+            return [];
+        }
+        catch { return []; }
+    }
+
+    /// <summary>GET /api/discover/games — Juegos populares</summary>
+    public async Task<List<DiscoverContentItem>> GetPopularGamesAsync(int page = 1)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.GetAsync($"api/discover/games?page={page}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<List<DiscoverContentItem>>() ?? [];
+            return [];
+        }
+        catch { return []; }
+    }
+
+    /// <summary>GET /api/discover/search?q=... — Búsqueda global</summary>
+    public async Task<List<DiscoverContentItem>> SearchContentAsync(string query, int page = 1)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.GetAsync($"api/discover/search?q={Uri.EscapeDataString(query)}&page={page}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<List<DiscoverContentItem>>() ?? [];
+            return [];
+        }
+        catch { return []; }
     }
 
     // ==================== MATCHING ====================

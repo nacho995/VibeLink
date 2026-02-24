@@ -10,6 +10,14 @@ public class MessageChat
     public int MatchingUserId { get; set; }
     public string Message { get; set; } = "";
     public DateTime Date { get; set; }
+    
+    // ID del usuario actual para determinar si es mensaje propio o del otro
+    public int CurrentUserId { get; set; }
+    
+    // Propiedades calculadas para el UI
+    public bool IsFromMe => UserId == CurrentUserId;
+    public bool IsFromOther => !IsFromMe;
+    public bool IsRead { get; set; } = true; // Por ahora siempre true
 }
 
 /// <summary>

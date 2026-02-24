@@ -3,62 +3,156 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VibeLink.App.Views.MatchesPage"
              Title="Matches"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
 
-    <Grid>
-        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                           Color="#e94560" VerticalOptions="Center" />
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Header épico -->
+        <Border Grid.Row="0" 
+                BackgroundColor="{StaticResource BackgroundMedium}" 
+                Padding="20,15"
+                Stroke="Transparent">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="*" FontSize="24" TextColor="{StaticResource MatchColor}"/>
+                        <Label Text="Matches" 
+                               FontSize="24" 
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+                    <Label Text="{Binding MatchCount, StringFormat='{0} personas te esperan'}" 
+                           FontSize="13" 
+                           TextColor="{StaticResource TextSecondary}"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
 
-        <!-- Vacío -->
-        <VerticalStackLayout IsVisible="{Binding IsEmpty}" VerticalOptions="Center"
-                             HorizontalOptions="Center" Spacing="10">
-            <Label Text="Sin matches aún" FontSize="22" TextColor="#8899aa"
-                   HorizontalOptions="Center" />
-            <Label Text="Sigue haciendo swipe para encontrar matches" FontSize="14"
-                   TextColor="#556677" HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center" />
-        </VerticalStackLayout>
+        <!-- Contenido -->
+        <Grid Grid.Row="1">
+            
+            <!-- Loading -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               IsVisible="{Binding IsBusy}"
+                               Color="{StaticResource Primary}" 
+                               VerticalOptions="Center"/>
 
-        <!-- Lista de matches -->
-        <CollectionView ItemsSource="{Binding Matches}"
-                        IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border BackgroundColor="#16213e" Stroke="#0f3460"
-                            StrokeShape="RoundRectangle 15" Padding="12" Margin="15,8">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenChatCommand}"
-                                CommandParameter="{Binding .}" />
-                        </Border.GestureRecognizers>
+            <!-- Sin matches -->
+            <VerticalStackLayout IsVisible="{Binding IsEmpty}" 
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center" 
+                                 Spacing="20"
+                                 Padding="30">
+                <Border BackgroundColor="{StaticResource Surface}"
+                        StrokeShape="RoundRectangle 50"
+                        WidthRequest="100"
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        Stroke="Transparent">
+                    <Label Text="*" FontSize="50" TextColor="{StaticResource MatchColor}" 
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+                <Label Text="Sin matches aún" FontSize="22" FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center"/>
+                <Label Text="¡Sigue calificando contenido y haciendo swipe para encontrar tu match perfecto!"
+                       FontSize="14" TextColor="{StaticResource TextSecondary}"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
 
-                        <Grid ColumnDefinitions="55,*,Auto" ColumnSpacing="15">
-                            <!-- Avatar -->
-                            <Border StrokeShape="RoundRectangle 25"
-                                    HeightRequest="50" WidthRequest="50"
-                                    StrokeThickness="2" Stroke="#e94560">
-                                <Image Source="{Binding AnotherUser.AvatarUrl}"
-                                       Aspect="AspectFill"
-                                       HeightRequest="50" WidthRequest="50" />
-                            </Border>
+            <!-- Lista de matches -->
+            <CollectionView ItemsSource="{Binding Matches}"
+                            IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}"
+                            Margin="15,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="{StaticResource CardBackground}"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 18"
+                                Padding="15"
+                                Margin="0,0,0,12">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenChatCommand}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                                
+                                <!-- Avatar con borde neón -->
+                                <Border WidthRequest="68"
+                                        HeightRequest="68"
+                                        StrokeShape="RoundRectangle 22"
+                                        Stroke="{StaticResource MatchColor}"
+                                        StrokeThickness="2"
+                                        Padding="3"
+                                        BackgroundColor="Transparent"
+                                        Shadow="{Shadow Brush={StaticResource MatchColor}, Opacity=0.3, Radius=10}">
+                                    <Image Source="{Binding AnotherUser.AvatarUrl}" 
+                                           Aspect="AspectFill"
+                                           WidthRequest="60"
+                                           HeightRequest="60">
+                                        <Image.Clip>
+                                            <RoundRectangleGeometry Rect="0,0,60,60" CornerRadius="18"/>
+                                        </Image.Clip>
+                                    </Image>
+                                </Border>
 
-                            <!-- Info -->
-                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
-                                <Label Text="{Binding AnotherUser.Username}"
-                                       FontSize="16" FontAttributes="Bold" TextColor="White" />
-                                <Label Text="{Binding AnotherUser.Bio}"
-                                       FontSize="12" TextColor="#8899aa"
-                                       MaxLines="1" LineBreakMode="TailTruncation" />
-                            </VerticalStackLayout>
+                                <!-- Info del match -->
+                                <VerticalStackLayout Grid.Column="1" 
+                                                     VerticalOptions="Center"
+                                                     Spacing="4">
+                                    <Label Text="{Binding AnotherUser.Username}" 
+                                           FontSize="17"
+                                           FontAttributes="Bold" 
+                                           TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="{Binding AnotherUser.Bio}" 
+                                           FontSize="13"
+                                           TextColor="{StaticResource TextSecondary}"
+                                           MaxLines="1"
+                                           LineBreakMode="TailTruncation"/>
+                                    
+                                    <!-- Tags de gustos en común -->
+                                    <HorizontalStackLayout Spacing="6" Margin="0,4,0,0">
+                                        <Border BackgroundColor="{StaticResource MovieColor}"
+                                                Opacity="0.9"
+                                                StrokeShape="RoundRectangle 6"
+                                                Padding="8,3"
+                                                Stroke="Transparent">
+                                            <Label Text="*5" FontSize="10" TextColor="White" FontAttributes="Bold"/>
+                                        </Border>
+                                        <Border BackgroundColor="{StaticResource SeriesColor}"
+                                                Opacity="0.9"
+                                                StrokeShape="RoundRectangle 6"
+                                                Padding="8,3"
+                                                Stroke="Transparent">
+                                            <Label Text="*3" FontSize="10" TextColor="White" FontAttributes="Bold"/>
+                                        </Border>
+                                        <Border BackgroundColor="{StaticResource GameColor}"
+                                                Opacity="0.9"
+                                                StrokeShape="RoundRectangle 6"
+                                                Padding="8,3"
+                                                Stroke="Transparent">
+                                            <Label Text="*8" FontSize="10" TextColor="Black" FontAttributes="Bold"/>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
 
-                            <!-- Fecha -->
-                            <Label Grid.Column="2" VerticalOptions="Center"
-                                   Text="{Binding MatchDate, StringFormat='{0:dd/MM}'}"
-                                   FontSize="11" TextColor="#556677" />
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                <!-- Botón chat -->
+                                <Border Grid.Column="2" 
+                                        VerticalOptions="Center"
+                                        BackgroundColor="{StaticResource Primary}"
+                                        StrokeShape="RoundRectangle 12"
+                                        Padding="12,10"
+                                        Stroke="Transparent"
+                                        Shadow="{Shadow Brush={StaticResource Primary}, Opacity=0.3, Radius=8}">
+                                    <Label Text="Chat" FontSize="12" TextColor="White" FontAttributes="Bold"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </Grid>
 </ContentPage>

@@ -3,80 +3,226 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VibeLink.App.Views.PremiumPage"
              Title="Premium"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="{StaticResource BackgroundDark}"
+             Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+    <Grid>
+        <!-- Efectos de fondo premium -->
+        <BoxView BackgroundColor="{StaticResource PremiumGold}"
+                 Opacity="0.05"
+                 WidthRequest="400"
+                 HeightRequest="400"
+                 CornerRadius="200"
+                 HorizontalOptions="Center"
+                 VerticalOptions="Start"
+                 Margin="0,-150,0,0"/>
 
-            <!-- Ya es premium -->
-            <VerticalStackLayout IsVisible="{Binding IsPremium}" Spacing="15"
-                                 HorizontalOptions="Center">
-                <Label Text="Ya eres Premium" FontSize="30" FontAttributes="Bold"
-                       TextColor="Gold" HorizontalOptions="Center" />
-                <Label Text="Disfruta de swipes ilimitados" FontSize="16"
-                       TextColor="#8899aa" HorizontalOptions="Center" />
-            </VerticalStackLayout>
+        <ScrollView>
+            <VerticalStackLayout Padding="25" Spacing="20">
 
-            <!-- No es premium -->
-            <VerticalStackLayout IsVisible="{Binding IsPremium, Converter={StaticResource InvertedBoolConverter}}"
-                                 Spacing="20">
+                <!-- Ya es premium - Estado especial -->
+                <Border IsVisible="{Binding IsPremium}" 
+                        BackgroundColor="{StaticResource CardBackground}"
+                        Stroke="{StaticResource PremiumGold}"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 25"
+                        Padding="30"
+                        Margin="0,30,0,0"
+                        Shadow="{Shadow Brush={StaticResource PremiumGold}, Opacity=0.3, Radius=25}">
+                    <VerticalStackLayout Spacing="20" HorizontalOptions="Center">
+                        <Border BackgroundColor="{StaticResource PremiumGold}"
+                                StrokeShape="RoundRectangle 40"
+                                WidthRequest="80"
+                                HeightRequest="80"
+                                HorizontalOptions="Center"
+                                Stroke="Transparent">
+                            <Label Text="*" FontSize="45" TextColor="{StaticResource BackgroundDark}" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Text="ERES PREMIUM" FontSize="28" FontAttributes="Bold"
+                               TextColor="{StaticResource PremiumGold}" HorizontalOptions="Center" 
+                               LetterSpacing="0.2"/>
+                        <Label Text="Disfruta de todos los beneficios exclusivos" FontSize="14"
+                               TextColor="{StaticResource TextSecondary}" HorizontalOptions="Center" 
+                               HorizontalTextAlignment="Center"/>
+                        
+                        <!-- Beneficios activos -->
+                        <VerticalStackLayout Spacing="12" Margin="0,15,0,0">
+                            <HorizontalStackLayout Spacing="12">
+                                <Label Text="Y" TextColor="{StaticResource LikeColor}" FontSize="16"/>
+                                <Label Text="Swipes ilimitados activos" TextColor="{StaticResource TextPrimary}" FontSize="14"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <Label Text="Y" TextColor="{StaticResource LikeColor}" FontSize="16"/>
+                                <Label Text="Sin publicidad" TextColor="{StaticResource TextPrimary}" FontSize="14"/>
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="12">
+                                <Label Text="Y" TextColor="{StaticResource LikeColor}" FontSize="16"/>
+                                <Label Text="Prioridad en matches" TextColor="{StaticResource TextPrimary}" FontSize="14"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
 
-                <Label Text="VibeLink Premium" FontSize="32" FontAttributes="Bold"
-                       TextColor="Gold" HorizontalOptions="Center" />
+                <!-- No es premium - Venta -->
+                <VerticalStackLayout IsVisible="{Binding IsPremium, Converter={StaticResource InvertedBoolConverter}}"
+                                     Spacing="25">
 
-                <BoxView HeightRequest="1" Color="#0f3460" />
+                    <!-- Header con logo premium -->
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20,0,0">
+                        <Border BackgroundColor="{StaticResource PremiumGold}"
+                                StrokeShape="RoundRectangle 30"
+                                WidthRequest="70"
+                                HeightRequest="70"
+                                HorizontalOptions="Center"
+                                Stroke="Transparent"
+                                Shadow="{Shadow Brush={StaticResource PremiumGold}, Opacity=0.4, Radius=20}">
+                            <Label Text="*" FontSize="40" TextColor="{StaticResource BackgroundDark}" 
+                                   HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+                        </Border>
+                        <Label Text="VIBELINK" FontSize="16" TextColor="{StaticResource TextMuted}" 
+                               HorizontalOptions="Center" LetterSpacing="0.3"/>
+                        <Label Text="PREMIUM" FontSize="36" FontAttributes="Bold"
+                               TextColor="{StaticResource PremiumGold}" HorizontalOptions="Center" 
+                               LetterSpacing="0.2"/>
+                    </VerticalStackLayout>
 
-                <!-- Beneficios -->
-                <VerticalStackLayout Spacing="15" Padding="10,0">
-                    <Label TextColor="White" FontSize="16">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Swipes ilimitados " FontAttributes="Bold" />
-                                <Span Text="- Sin límite diario de 10 swipes" TextColor="#8899aa" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                    <!-- Card de beneficios -->
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="25">
+                        <VerticalStackLayout Spacing="18">
+                            <Label Text="Beneficios exclusivos" FontSize="18" FontAttributes="Bold"
+                                   TextColor="{StaticResource TextPrimary}" HorizontalOptions="Center"/>
+                            
+                            <!-- Beneficio 1 -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                <Border BackgroundColor="{StaticResource Primary}"
+                                        StrokeShape="RoundRectangle 12"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        Stroke="Transparent">
+                                    <Label Text="8" FontSize="20" TextColor="White" 
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Swipes ilimitados" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="Sin límite diario de 10 swipes" FontSize="12"
+                                           TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                            </Grid>
 
-                    <Label TextColor="White" FontSize="16">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Más matches " FontAttributes="Bold" />
-                                <Span Text="- Haz swipe a todas las personas que quieras" TextColor="#8899aa" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BorderColor}"/>
 
-                    <Label TextColor="White" FontSize="16">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Más contenido " FontAttributes="Bold" />
-                                <Span Text="- Valora películas, series y juegos sin límite" TextColor="#8899aa" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
+                            <!-- Beneficio 2 -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                <Border BackgroundColor="{StaticResource MatchColor}"
+                                        StrokeShape="RoundRectangle 12"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        Stroke="Transparent">
+                                    <Label Text="*" FontSize="22" TextColor="White" 
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Más matches" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="Haz swipe a todas las personas" FontSize="12"
+                                           TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BorderColor}"/>
+
+                            <!-- Beneficio 3 -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                <Border BackgroundColor="{StaticResource GameColor}"
+                                        StrokeShape="RoundRectangle 12"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        Stroke="Transparent">
+                                    <Label Text="*" FontSize="22" TextColor="{StaticResource BackgroundDark}" 
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Contenido ilimitado" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="Películas, series y juegos sin límite" FontSize="12"
+                                           TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" BackgroundColor="{StaticResource BorderColor}"/>
+
+                            <!-- Beneficio 4 -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                <Border BackgroundColor="{StaticResource AccentAlt}"
+                                        StrokeShape="RoundRectangle 12"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        Stroke="Transparent">
+                                    <Label Text="*" FontSize="22" TextColor="White" 
+                                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="Sin publicidad" FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource TextPrimary}"/>
+                                    <Label Text="Experiencia limpia y fluida" FontSize="12"
+                                           TextColor="{StaticResource TextSecondary}"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Precio -->
+                    <Border BackgroundColor="{StaticResource Surface}"
+                            Stroke="{StaticResource PremiumGold}"
+                            StrokeThickness="2"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="25,20">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                                <Label Text="9,99" FontSize="48" FontAttributes="Bold"
+                                       TextColor="{StaticResource PremiumGold}"/>
+                                <Label Text="EUR" FontSize="20" TextColor="{StaticResource PremiumGold}"
+                                       VerticalOptions="End" Margin="0,0,0,10"/>
+                            </HorizontalStackLayout>
+                            <Label Text="Pago único - Acceso de por vida" FontSize="13" 
+                                   TextColor="{StaticResource TextSecondary}"
+                                   HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Botón comprar -->
+                    <Button Text="HAZTE PREMIUM AHORA" 
+                            Command="{Binding BuyPremiumCommand}"
+                            BackgroundColor="{StaticResource PremiumGold}" 
+                            TextColor="{StaticResource BackgroundDark}"
+                            FontAttributes="Bold" 
+                            FontSize="17"
+                            CornerRadius="15" 
+                            HeightRequest="60"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            Shadow="{Shadow Brush={StaticResource PremiumGold}, Opacity=0.4, Radius=20, Offset='0,8'}"/>
+
+                    <!-- Loading -->
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                                       IsVisible="{Binding IsBusy}"
+                                       Color="{StaticResource PremiumGold}" 
+                                       HeightRequest="30"/>
+
+                    <!-- Garantía -->
+                    <Label Text="Pago seguro con Stripe - Garantía de devolución 7 días" 
+                           FontSize="11"
+                           TextColor="{StaticResource TextMuted}" 
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+
                 </VerticalStackLayout>
-
-                <BoxView HeightRequest="1" Color="#0f3460" />
-
-                <!-- Precio -->
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
-                    <Label Text="9,99 EUR" FontSize="40" FontAttributes="Bold"
-                           TextColor="Gold" HorizontalOptions="Center" />
-                    <Label Text="Pago único" FontSize="14" TextColor="#8899aa"
-                           HorizontalOptions="Center" />
-                </VerticalStackLayout>
-
-                <!-- Botón comprar -->
-                <Button Text="Hazte Premium" Command="{Binding BuyPremiumCommand}"
-                        BackgroundColor="Gold" TextColor="#1a1a2e"
-                        FontAttributes="Bold" FontSize="18"
-                        CornerRadius="15" HeightRequest="55"
-                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
-
-                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                                   Color="Gold" />
             </VerticalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

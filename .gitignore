@@ -1,0 +1,32 @@
+# Environment files with secrets
+.env
+.env.local
+.env.production
+
+# SSL certificates
+nginx/ssl/
+
+# Logs
+*.log
+nginx/logs/
+
+# .NET
+backend/bin/
+backend/obj/
+*.user
+*.suo
+
+# MAUI
+frontend/VibeLink.App/bin/
+frontend/VibeLink.App/obj/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Docker
+docker-compose.override.yml

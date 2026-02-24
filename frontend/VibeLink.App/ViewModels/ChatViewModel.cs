@@ -27,6 +27,11 @@ public partial class ChatViewModel : ObservableObject, IQueryAttributable
     [ObservableProperty] private string matchUsername = "";
     [ObservableProperty] private string newMessage = "";
     [ObservableProperty] private bool isBusy;
+    [ObservableProperty] private int compatibilityPercent = 0;
+    
+    // Propiedades calculadas para el header del chat
+    public string MatchInitial => string.IsNullOrEmpty(MatchUsername) ? "?" : MatchUsername[0].ToString().ToUpper();
+    public string CompatibilityText => CompatibilityPercent > 0 ? $"{CompatibilityPercent}% compatibilidad" : "Match";
 
     /// <summary>
     /// MAUI llama a esto automáticamente con los parámetros de la URL.
@@ -39,6 +44,12 @@ public partial class ChatViewModel : ObservableObject, IQueryAttributable
             _matchUserId = int.Parse(mid.ToString()!);
         if (query.TryGetValue("matchUsername", out var name))
             MatchUsername = name.ToString()!;
+        if (query.TryGetValue("compatibility", out var comp))
+            CompatibilityPercent = int.Parse(comp.ToString()!);
+        
+        // Notificar que las propiedades calculadas han cambiado
+        OnPropertyChanged(nameof(MatchInitial));
+        OnPropertyChanged(nameof(CompatibilityText));
     }
 
     [RelayCommand]
@@ -49,7 +60,10 @@ public partial class ChatViewModel : ObservableObject, IQueryAttributable
 
         var messages = await _apiService.GetMessagesAsync(_userId, _matchUserId);
         foreach (var m in messages)
+        {
+            m.CurrentUserId = _userId; // Para que sepa quién es "yo"
             Messages.Add(m);
+        }
 
         IsBusy = false;
     }
@@ -75,7 +89,8 @@ public partial class ChatViewModel : ObservableObject, IQueryAttributable
                 UserId = _userId,
                 MatchingUserId = _matchUserId,
                 Message = NewMessage.Trim(),
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                CurrentUserId = _userId
             });
             NewMessage = "";
         }

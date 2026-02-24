@@ -1,38 +1,96 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
+    <!-- 
+    VibeLink Color Palette - Gaming/Streaming Theme
+    Inspirado en: Netflix, PlayStation, Xbox, Steam
+    -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <!-- Primary Colors - Neon Gaming Vibe -->
+    <Color x:Key="Primary">#FF6B35</Color>           <!-- Naranja gaming vibrante -->
+    <Color x:Key="PrimaryDark">#E85A24</Color>       <!-- Naranja oscuro -->
+    <Color x:Key="Secondary">#00D4FF</Color>         <!-- Cyan neón -->
+    <Color x:Key="SecondaryDark">#00A8CC</Color>     <!-- Cyan oscuro -->
+    <Color x:Key="Accent">#FF2E63</Color>            <!-- Rosa/Magenta gaming -->
+    <Color x:Key="AccentAlt">#8B5CF6</Color>         <!-- Violeta gaming -->
+    
+    <!-- Category Colors -->
+    <Color x:Key="MovieColor">#E50914</Color>        <!-- Rojo Netflix -->
+    <Color x:Key="SeriesColor">#1DB954</Color>       <!-- Verde Series -->
+    <Color x:Key="GameColor">#00D4FF</Color>         <!-- Cyan PlayStation -->
+    
+    <!-- Background Colors - Dark Mode Gaming -->
+    <Color x:Key="BackgroundDark">#0A0A0F</Color>    <!-- Negro profundo -->
+    <Color x:Key="BackgroundMedium">#12121A</Color>  <!-- Gris muy oscuro -->
+    <Color x:Key="BackgroundLight">#1A1A2E</Color>   <!-- Gris oscuro con tinte azul -->
+    <Color x:Key="CardBackground">#16162A</Color>    <!-- Cards -->
+    <Color x:Key="CardBackgroundHover">#1E1E3F</Color>
+    
+    <!-- Surface Colors -->
+    <Color x:Key="Surface">#1E1E2E</Color>
+    <Color x:Key="SurfaceVariant">#252540</Color>
+    <Color x:Key="SurfaceBright">#2D2D4A</Color>
+    
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <Color x:Key="TextSecondary">#A0A0B8</Color>
+    <Color x:Key="TextMuted">#6B6B80</Color>
+    <Color x:Key="TextAccent">#FF6B35</Color>
+    
+    <!-- Border Colors -->
+    <Color x:Key="BorderColor">#2A2A45</Color>
+    <Color x:Key="BorderAccent">#FF6B35</Color>
+    <Color x:Key="BorderGlow">#00D4FF40</Color>
+    
+    <!-- Status Colors -->
+    <Color x:Key="Success">#00F5A0</Color>
+    <Color x:Key="Warning">#FFB800</Color>
+    <Color x:Key="Error">#FF4757</Color>
+    <Color x:Key="Info">#00D4FF</Color>
+    
+    <!-- Match Colors -->
+    <Color x:Key="LikeColor">#00F5A0</Color>
+    <Color x:Key="DislikeColor">#FF4757</Color>
+    <Color x:Key="SuperLikeColor">#00D4FF</Color>
+    <Color x:Key="MatchColor">#FF2E63</Color>
+    
+    <!-- Gradient Colors -->
+    <Color x:Key="GradientStart">#FF6B35</Color>
+    <Color x:Key="GradientMiddle">#FF2E63</Color>
+    <Color x:Key="GradientEnd">#8B5CF6</Color>
+    
+    <!-- Premium/Gold -->
+    <Color x:Key="PremiumGold">#FFD700</Color>
+    <Color x:Key="PremiumGradientStart">#FFD700</Color>
+    <Color x:Key="PremiumGradientEnd">#FFA500</Color>
 
-    <Color x:Key="White">White</Color>
-    <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
+    <!-- Legacy colors for compatibility -->
+    <Color x:Key="White">#FFFFFF</Color>
+    <Color x:Key="Black">#000000</Color>
+    <Color x:Key="Magenta">#FF2E63</Color>
+    <Color x:Key="MidnightBlue">#0A0A0F</Color>
+    <Color x:Key="OffBlack">#0A0A0F</Color>
 
-    <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#C8C8C8</Color>
-    <Color x:Key="Gray300">#ACACAC</Color>
-    <Color x:Key="Gray400">#919191</Color>
-    <Color x:Key="Gray500">#6E6E6E</Color>
-    <Color x:Key="Gray600">#404040</Color>
-    <Color x:Key="Gray900">#212121</Color>
-    <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Gray100">#E8E8F0</Color>
+    <Color x:Key="Gray200">#C8C8D8</Color>
+    <Color x:Key="Gray300">#A0A0B8</Color>
+    <Color x:Key="Gray400">#808098</Color>
+    <Color x:Key="Gray500">#6B6B80</Color>
+    <Color x:Key="Gray600">#404058</Color>
+    <Color x:Key="Gray900">#1A1A2E</Color>
+    <Color x:Key="Gray950">#0A0A0F</Color>
 
+    <!-- Brushes -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundDark}"/>
+    <SolidColorBrush x:Key="CardBrush" Color="{StaticResource CardBackground}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
-
+    
     <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
     <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
     <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}"/>
@@ -41,4 +99,27 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Gradients -->
+    <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource GradientStart}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource GradientEnd}" Offset="1.0"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Primary}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource Accent}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource AccentAlt}" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PremiumGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource PremiumGradientStart}" Offset="0.0"/>
+        <GradientStop Color="{StaticResource PremiumGradientEnd}" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#1A1A2E" Offset="0.0"/>
+        <GradientStop Color="#12121A" Offset="1.0"/>
+    </LinearGradientBrush>
+
 </ResourceDictionary>
