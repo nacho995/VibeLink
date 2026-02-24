@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VibeLink.App.ViewModels"
+             x:Class="VibeLink.App.Views.RegisterPage"
+             Title="Registro"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#1a1a2e">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="20"
+            VerticalOptions="Center">
+
+            <!-- Título -->
+            <Label
+                Text="Crear Cuenta"
+                FontSize="35"
+                FontAttributes="Bold"
+                TextColor="#e94560"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Únete a VibeLink"
+                FontSize="14"
+                TextColor="#8899aa"
+                HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="10" Color="Transparent" />
+
+            <!-- Campo Username -->
+            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
+                <Entry
+                    Text="{Binding Username}"
+                    Placeholder="Nombre de usuario"
+                    PlaceholderColor="#556677"
+                    TextColor="White" />
+            </Border>
+
+            <!-- Campo Email -->
+            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
+                <Entry
+                    Text="{Binding Email}"
+                    Placeholder="Email"
+                    PlaceholderColor="#556677"
+                    TextColor="White"
+                    Keyboard="Email" />
+            </Border>
+
+            <!-- Campo Password -->
+            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
+                <Entry
+                    Text="{Binding Password}"
+                    Placeholder="Contraseña"
+                    PlaceholderColor="#556677"
+                    TextColor="White"
+                    IsPassword="True" />
+            </Border>
+
+            <!-- Campo Confirmar Password -->
+            <Border BackgroundColor="#16213e" Stroke="#0f3460" StrokeShape="RoundRectangle 10" Padding="5">
+                <Entry
+                    Text="{Binding ConfirmPassword}"
+                    Placeholder="Confirmar contraseña"
+                    PlaceholderColor="#556677"
+                    TextColor="White"
+                    IsPassword="True" />
+            </Border>
+
+            <!-- Mensaje de error -->
+            <Label
+                Text="{Binding ErrorMessage}"
+                TextColor="#ff6b6b"
+                FontSize="13"
+                HorizontalOptions="Center"
+                IsVisible="{Binding ShowError}" />
+
+            <!-- Botón Registro -->
+            <Button
+                Text="Crear Cuenta"
+                Command="{Binding RegisterCommand}"
+                BackgroundColor="#e94560"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="50"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                Color="#e94560" />
+
+            <!-- Link a Login -->
+            <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="¿Ya tienes cuenta? " TextColor="#8899aa" />
+                        <Span Text="Inicia sesión" TextColor="#e94560" FontAttributes="Bold">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToLoginCommand}" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

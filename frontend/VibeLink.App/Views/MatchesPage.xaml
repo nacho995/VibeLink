@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VibeLink.App.Views.MatchesPage"
+             Title="Matches"
+             BackgroundColor="#1a1a2e">
+
+    <Grid>
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           Color="#e94560" VerticalOptions="Center" />
+
+        <!-- Vacío -->
+        <VerticalStackLayout IsVisible="{Binding IsEmpty}" VerticalOptions="Center"
+                             HorizontalOptions="Center" Spacing="10">
+            <Label Text="Sin matches aún" FontSize="22" TextColor="#8899aa"
+                   HorizontalOptions="Center" />
+            <Label Text="Sigue haciendo swipe para encontrar matches" FontSize="14"
+                   TextColor="#556677" HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <!-- Lista de matches -->
+        <CollectionView ItemsSource="{Binding Matches}"
+                        IsVisible="{Binding IsEmpty, Converter={StaticResource InvertedBoolConverter}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="#16213e" Stroke="#0f3460"
+                            StrokeShape="RoundRectangle 15" Padding="12" Margin="15,8">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenChatCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="55,*,Auto" ColumnSpacing="15">
+                            <!-- Avatar -->
+                            <Border StrokeShape="RoundRectangle 25"
+                                    HeightRequest="50" WidthRequest="50"
+                                    StrokeThickness="2" Stroke="#e94560">
+                                <Image Source="{Binding AnotherUser.AvatarUrl}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="50" WidthRequest="50" />
+                            </Border>
+
+                            <!-- Info -->
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                <Label Text="{Binding AnotherUser.Username}"
+                                       FontSize="16" FontAttributes="Bold" TextColor="White" />
+                                <Label Text="{Binding AnotherUser.Bio}"
+                                       FontSize="12" TextColor="#8899aa"
+                                       MaxLines="1" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+
+                            <!-- Fecha -->
+                            <Label Grid.Column="2" VerticalOptions="Center"
+                                   Text="{Binding MatchDate, StringFormat='{0:dd/MM}'}"
+                                   FontSize="11" TextColor="#556677" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

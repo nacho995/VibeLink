@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    AppShell.xaml - Navegación de la app
+    
+    Estructura:
+    1. LoginPage: pantalla inicial (sin tabs)
+    2. TabBar "HomePage": las 5 pestañas principales (después del login)
+    
+    FlyoutBehavior="Disabled": no usamos menú lateral, solo tabs.
+-->
+<Shell
+    x:Class="VibeLink.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:VibeLink.App.Views"
+    xmlns:local="clr-namespace:VibeLink.App"
+    Title="VibeLink"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!-- Login (sin tabs, pantalla completa) -->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="LoginPage"
+        Shell.TabBarIsVisible="False" />
+
+    <!-- Pantallas principales con tabs (después del login) -->
+    <TabBar Route="HomePage">
+
+        <ShellContent
+            Title="Descubrir"
+            Icon="swipe_icon"
+            ContentTemplate="{DataTemplate views:SwipePage}"
+            Route="SwipePage" />
+
+        <ShellContent
+            Title="Contenido"
+            Icon="content_icon"
+            ContentTemplate="{DataTemplate views:ContentSwipePage}"
+            Route="ContentSwipePage" />
+
+        <ShellContent
+            Title="Matches"
+            Icon="matches_icon"
+            ContentTemplate="{DataTemplate views:MatchesPage}"
+            Route="MatchesPage" />
+
+        <ShellContent
+            Title="Premium"
+            Icon="premium_icon"
+            ContentTemplate="{DataTemplate views:PremiumPage}"
+            Route="PremiumPage" />
+
+        <ShellContent
+            Title="Perfil"
+            Icon="profile_icon"
+            ContentTemplate="{DataTemplate views:ProfilePage}"
+            Route="ProfilePage" />
+
+    </TabBar>
+
+</Shell>

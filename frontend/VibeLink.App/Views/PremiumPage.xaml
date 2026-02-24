@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VibeLink.App.Views.PremiumPage"
+             Title="Premium"
+             BackgroundColor="#1a1a2e">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+            <!-- Ya es premium -->
+            <VerticalStackLayout IsVisible="{Binding IsPremium}" Spacing="15"
+                                 HorizontalOptions="Center">
+                <Label Text="Ya eres Premium" FontSize="30" FontAttributes="Bold"
+                       TextColor="Gold" HorizontalOptions="Center" />
+                <Label Text="Disfruta de swipes ilimitados" FontSize="16"
+                       TextColor="#8899aa" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- No es premium -->
+            <VerticalStackLayout IsVisible="{Binding IsPremium, Converter={StaticResource InvertedBoolConverter}}"
+                                 Spacing="20">
+
+                <Label Text="VibeLink Premium" FontSize="32" FontAttributes="Bold"
+                       TextColor="Gold" HorizontalOptions="Center" />
+
+                <BoxView HeightRequest="1" Color="#0f3460" />
+
+                <!-- Beneficios -->
+                <VerticalStackLayout Spacing="15" Padding="10,0">
+                    <Label TextColor="White" FontSize="16">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Swipes ilimitados " FontAttributes="Bold" />
+                                <Span Text="- Sin límite diario de 10 swipes" TextColor="#8899aa" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label TextColor="White" FontSize="16">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Más matches " FontAttributes="Bold" />
+                                <Span Text="- Haz swipe a todas las personas que quieras" TextColor="#8899aa" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label TextColor="White" FontSize="16">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Más contenido " FontAttributes="Bold" />
+                                <Span Text="- Valora películas, series y juegos sin límite" TextColor="#8899aa" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+
+                <BoxView HeightRequest="1" Color="#0f3460" />
+
+                <!-- Precio -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Label Text="9,99 EUR" FontSize="40" FontAttributes="Bold"
+                           TextColor="Gold" HorizontalOptions="Center" />
+                    <Label Text="Pago único" FontSize="14" TextColor="#8899aa"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Botón comprar -->
+                <Button Text="Hazte Premium" Command="{Binding BuyPremiumCommand}"
+                        BackgroundColor="Gold" TextColor="#1a1a2e"
+                        FontAttributes="Bold" FontSize="18"
+                        CornerRadius="15" HeightRequest="55"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" />
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   Color="Gold" />
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

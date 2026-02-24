@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VibeLink.App.Views.SwipePage"
+             Title="Descubrir"
+             BackgroundColor="#1a1a2e">
+
+    <Grid>
+        <!-- Loading -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           Color="#e94560" VerticalOptions="Center" />
+
+        <!-- No hay más usuarios -->
+        <VerticalStackLayout IsVisible="{Binding NoMoreUsers}" VerticalOptions="Center"
+                             HorizontalOptions="Center" Spacing="10">
+            <Label Text="No hay más personas" FontSize="22" TextColor="#8899aa"
+                   HorizontalOptions="Center" />
+            <Label Text="Vuelve más tarde" FontSize="14" TextColor="#556677"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Card del usuario actual -->
+        <VerticalStackLayout IsVisible="{Binding HasUsers}" Padding="20" Spacing="15"
+                             VerticalOptions="Center">
+
+            <!-- Card -->
+            <Border BackgroundColor="#16213e" Stroke="#0f3460"
+                    StrokeShape="RoundRectangle 20" Padding="0">
+                <Grid RowDefinitions="300,Auto">
+                    <!-- Foto -->
+                    <Image Source="{Binding CurrentAvatar}" Aspect="AspectFill"
+                           HeightRequest="300">
+                        <Image.Clip>
+                            <RoundRectangleGeometry Rect="0,0,400,300" CornerRadius="20,20,0,0" />
+                        </Image.Clip>
+                    </Image>
+
+                    <!-- Info -->
+                    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="8">
+                        <Label Text="{Binding CurrentUsername}" FontSize="26"
+                               FontAttributes="Bold" TextColor="White" />
+                        <Label Text="{Binding CurrentBio}" FontSize="14"
+                               TextColor="#8899aa" MaxLines="3" />
+
+                        <!-- Barra de compatibilidad -->
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,5,0,0">
+                            <ProgressBar Progress="{Binding CurrentCompatibility, Converter={StaticResource InvertedBoolConverter}}"
+                                         ProgressColor="#e94560" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding CurrentCompatibility, StringFormat='{0}% compatible'}"
+                                   TextColor="#e94560" FontAttributes="Bold" FontSize="13"
+                                   Margin="10,0,0,0" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Botones Like / Dislike -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Margin="20,0">
+                <Button Text="Nope" Command="{Binding DislikeCommand}"
+                        BackgroundColor="#2d2d44" TextColor="#ff6b6b"
+                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
+                        FontSize="18" />
+                <Button Grid.Column="1" Text="Like" Command="{Binding LikeCommand}"
+                        BackgroundColor="#e94560" TextColor="White"
+                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
+                        FontSize="18" />
+            </Grid>
+
+            <!-- Match notification -->
+            <Border IsVisible="{Binding ShowMatch}" BackgroundColor="#e94560"
+                    StrokeShape="RoundRectangle 15" Padding="15" Stroke="Transparent"
+                    HorizontalOptions="Center">
+                <Label Text="{Binding MatchMessage}" TextColor="White"
+                       FontSize="18" FontAttributes="Bold" />
+            </Border>
+
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

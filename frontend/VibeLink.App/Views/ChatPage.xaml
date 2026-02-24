@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:VibeLink.App.Models"
+             x:Class="VibeLink.App.Views.ChatPage"
+             Title="{Binding MatchUsername}"
+             BackgroundColor="#1a1a2e">
+
+    <Grid RowDefinitions="*,Auto" Padding="10">
+
+        <!-- Mensajes -->
+        <CollectionView ItemsSource="{Binding Messages}"
+                        x:Name="MessagesCollection"
+                        VerticalOptions="Fill">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:MessageChat">
+                    <VerticalStackLayout Padding="5,3">
+                        <Border BackgroundColor="#16213e"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="Transparent"
+                                Padding="12,8"
+                                HorizontalOptions="Start"
+                                MaximumWidthRequest="280">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Message}"
+                                       TextColor="White" FontSize="14" />
+                                <Label Text="{Binding Date, StringFormat='{0:HH:mm}'}"
+                                       TextColor="#556677" FontSize="10"
+                                       HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Barra de envío -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10"
+              Padding="5,10,5,5">
+            <Border BackgroundColor="#16213e" Stroke="#0f3460"
+                    StrokeShape="RoundRectangle 25" Padding="12,5">
+                <Entry Text="{Binding NewMessage}" TextColor="White"
+                       Placeholder="Escribe un mensaje..."
+                       PlaceholderColor="#556677"
+                       ReturnCommand="{Binding SendCommand}" />
+            </Border>
+
+            <Button Grid.Column="1" Text="Enviar"
+                    Command="{Binding SendCommand}"
+                    BackgroundColor="#e94560" TextColor="White"
+                    CornerRadius="25" WidthRequest="80"
+                    FontAttributes="Bold" FontSize="13" />
+        </Grid>
+    </Grid>
+</ContentPage>

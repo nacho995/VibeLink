@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VibeLink.App.Views.ContentSwipePage"
+             Title="Contenido"
+             BackgroundColor="#1a1a2e">
+
+    <Grid>
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                           Color="#e94560" VerticalOptions="Center" />
+
+        <!-- Sin contenido -->
+        <VerticalStackLayout IsVisible="{Binding NoMoreContent}" VerticalOptions="Center"
+                             HorizontalOptions="Center" Spacing="10">
+            <Label Text="No hay más contenido" FontSize="22" TextColor="#8899aa"
+                   HorizontalOptions="Center" />
+            <Label Text="Has visto todo el catálogo" FontSize="14" TextColor="#556677"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- Card de contenido -->
+        <VerticalStackLayout IsVisible="{Binding HasContent}" Padding="20" Spacing="15"
+                             VerticalOptions="Center">
+
+            <Border BackgroundColor="#16213e" Stroke="#0f3460"
+                    StrokeShape="RoundRectangle 20" Padding="0">
+                <Grid RowDefinitions="280,Auto">
+                    <Image Source="{Binding CurrentImage}" Aspect="AspectFill"
+                           HeightRequest="280">
+                        <Image.Clip>
+                            <RoundRectangleGeometry Rect="0,0,400,280" CornerRadius="20,20,0,0" />
+                        </Image.Clip>
+                    </Image>
+
+                    <!-- Badge tipo -->
+                    <Border BackgroundColor="#e94560" StrokeShape="RoundRectangle 10"
+                            Padding="8,4" Stroke="Transparent"
+                            HorizontalOptions="Start" VerticalOptions="Start"
+                            Margin="15,15,0,0">
+                        <Label Text="{Binding CurrentType}" TextColor="White"
+                               FontSize="11" FontAttributes="Bold" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="6">
+                        <Label Text="{Binding CurrentTitle}" FontSize="24"
+                               FontAttributes="Bold" TextColor="White" />
+                        <Label Text="{Binding CurrentYear, StringFormat='{0}'}"
+                               FontSize="14" TextColor="#e94560" />
+                        <Label Text="{Binding CurrentGenres}" FontSize="13"
+                               TextColor="#8899aa" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Botones -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Margin="20,0">
+                <Button Text="Paso" Command="{Binding DislikeContentCommand}"
+                        BackgroundColor="#2d2d44" TextColor="#ff6b6b"
+                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
+                        FontSize="18" />
+                <Button Grid.Column="1" Text="Me gusta" Command="{Binding LikeContentCommand}"
+                        BackgroundColor="#e94560" TextColor="White"
+                        FontAttributes="Bold" CornerRadius="25" HeightRequest="55"
+                        FontSize="18" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildProjectDirectory)/bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/obj</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <Target Name="_StripXattrsBeforeCodesign" BeforeTargets="Codesign;CoreCodesign;_CodesignAppBundle">
+    <Exec Command="xattr -cr &quot;$(AppBundleDir)&quot;" ContinueOnError="true" Condition="Exists('$(AppBundleDir)')" />
+  </Target>
+</Project>
