@@ -22,6 +22,15 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Swipe(PeopleSwipeDTOs peopleSwipeDTOs)
         {
+            // Prevenir swipes duplicados
+            var existingSwipe = await _context.Swipes.FirstOrDefaultAsync(s =>
+                s.UserId == peopleSwipeDTOs.UserId &&
+                s.MatchingUserId == peopleSwipeDTOs.MatchingUserId);
+            if (existingSwipe != null)
+            {
+                return BadRequest("Ya has swipeado a este usuario");
+            }
+
             var user = await _context.Users.FindAsync(peopleSwipeDTOs.UserId);
             if (user == null)
             {

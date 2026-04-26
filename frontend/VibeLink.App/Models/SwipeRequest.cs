@@ -34,3 +34,16 @@ public class ContentSwipeRequest
     public ContentState State { get; set; }
     public int Punctuation { get; set; }
 }
+
+/// <summary>
+/// Like/Dislike desde el onboarding usando ExternalId de APIs externas.
+/// Coincide con ExternalLikeDTO del backend (POST /api/userlikes/external).
+/// </summary>
+public class ExternalLikeRequest
+{
+    public int UserId { get; set; }
+    public string ExternalId { get; set; } = "";  // ej: "tmdb-movie-550", "igdb-1942"
+    public string Title { get; set; } = "";
+    public string? ImageUrl { get; set; }
+    public ContentState State { get; set; }
+}

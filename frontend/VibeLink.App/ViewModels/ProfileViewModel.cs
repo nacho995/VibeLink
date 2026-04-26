@@ -46,7 +46,7 @@ public partial class ProfileViewModel : ObservableObject
             Bio = user.Bio ?? "";
             AvatarUrl = user.AvatarUrl ?? "";
             DateOfBirth = user.DateOfBirth;
-            SelectedGenderIndex = user.Gender == "Female" ? 1 : 0;
+            SelectedGenderIndex = user.Gender; // 0=Male, 1=Female (enum int del backend)
             IsPremium = user.IsPremium;
             SwipesLeft = user.Swipes;
         }

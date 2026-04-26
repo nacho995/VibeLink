@@ -168,6 +168,24 @@ public class ApiService
         }
     }
 
+    /// <summary>POST /api/userlikes/external — Like/Dislike desde onboarding (con ExternalId)</summary>
+    public async Task<(bool Success, string Message)> LikeExternalAsync(ExternalLikeRequest request)
+    {
+        try
+        {
+            await SetAuthHeader();
+            var response = await _httpClient.PostAsJsonAsync("api/userlikes/external", request);
+            if (response.IsSuccessStatusCode)
+                return (true, "OK");
+            var error = await response.Content.ReadAsStringAsync();
+            return (false, error);
+        }
+        catch (Exception ex)
+        {
+            return (false, $"Error: {ex.Message}");
+        }
+    }
+
     // ==================== CONTENIDO (legacy) ====================
 
     /// <summary>GET /api/contentscontrollers — Obtener todo el contenido local</summary>

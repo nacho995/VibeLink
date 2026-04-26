@@ -23,13 +23,24 @@ public class Content
 }
 
 /// <summary>
-/// Contenido devuelto por las APIs externas (TMDB/RAWG) via DiscoverController.
+/// Tipo de contenido devuelto por el DiscoverController.
+/// Debe coincidir con backend.Services.DiscoverContentType: Movie=0, Series=1, Game=2
+/// </summary>
+public enum DiscoverType
+{
+    Movie = 0,
+    Series = 1,
+    Game = 2
+}
+
+/// <summary>
+/// Contenido devuelto por las APIs externas (TMDB/IGDB) via DiscoverController.
 /// </summary>
 public class DiscoverContentItem
 {
     public string ExternalId { get; set; } = "";
     public string Title { get; set; } = "";
-    public string Type { get; set; } = ""; // "Movie", "Series", "Game"
+    public DiscoverType Type { get; set; }
     public string? ImageUrl { get; set; }
     public string? BackdropUrl { get; set; }
     public string Description { get; set; } = "";
@@ -41,18 +52,26 @@ public class DiscoverContentItem
     // Propiedades calculadas para UI
     public string TypeLabel => Type switch
     {
-        "Movie" => "Pelicula",
-        "Series" => "Serie",
-        "Game" => "Juego",
-        _ => Type
+        DiscoverType.Movie => "Pelicula",
+        DiscoverType.Series => "Serie",
+        DiscoverType.Game => "Juego",
+        _ => Type.ToString()
     };
 
     public string TypeColor => Type switch
     {
-        "Movie" => "#e94560",   // Rojo Netflix
-        "Series" => "#00d4ff",  // Cyan
-        "Game" => "#7bed9f",    // Verde
+        DiscoverType.Movie => "#e94560",   // Rojo Netflix
+        DiscoverType.Series => "#00d4ff",  // Cyan
+        DiscoverType.Game => "#7bed9f",    // Verde
         _ => "#a855f7"
+    };
+
+    public string TypeName => Type switch
+    {
+        DiscoverType.Movie => "Movie",
+        DiscoverType.Series => "Series",
+        DiscoverType.Game => "Game",
+        _ => "Movie"
     };
 
     public string RatingFormatted => Rating.ToString("0.0");

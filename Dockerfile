@@ -4,17 +4,17 @@
 # Stage 1: Build frontend
 FROM node:22-slim AS frontend-build
 WORKDIR /web
-COPY ../web/package.json ../web/package-lock.json ./
+COPY web/package.json web/package-lock.json ./
 RUN npm ci
-COPY ../web/ .
+COPY web/ .
 RUN npm run build
 
 # Stage 2: Build backend
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS backend-build
 WORKDIR /src
-COPY backend.csproj .
+COPY backend/backend.csproj .
 RUN dotnet restore
-COPY . .
+COPY backend/ .
 RUN dotnet publish -c Release -o /app/publish
 
 # Stage 3: Runtime

@@ -84,6 +84,20 @@ namespace backend.Controllers
         }
 
         /// <summary>
+        /// GET /api/UserLikes/count/{userId}
+        /// Devuelve la cantidad de likes (State=Liked) que tiene un usuario.
+        /// Se usa para determinar si ya completo el onboarding.
+        /// </summary>
+        [HttpGet("count/{userId}")]
+        public async Task<IActionResult> GetUserLikesCount(int userId)
+        {
+            var count = await _context.UserLikes
+                .Where(ul => ul.UserId == userId && ul.State == State.Liked)
+                .CountAsync();
+            return Ok(new { count });
+        }
+
+        /// <summary>
         /// POST /api/UserLikes/external
         /// Recibe likes desde el onboarding usando ExternalId (ej: "tmdb-movie-1236153").
         /// Si el contenido no existe en la BD, lo crea automaticamente.

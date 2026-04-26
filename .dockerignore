@@ -1,0 +1,16 @@
+**/node_modules
+**/bin
+**/obj
+.git
+.idea
+.vscode
+**/dist
+**/.env
+/stores
+/scripts
+/database
+/nginx
+/frontend
+**/*.md
+docker-compose.yml
+.env.example

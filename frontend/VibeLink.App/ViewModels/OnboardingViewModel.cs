@@ -122,14 +122,15 @@ public partial class OnboardingViewModel : ObservableObject
             LikedCount = LikedItems.Count;
         }
 
-        // Enviar al backend (registrar el like del contenido)
-        var userId = _sessionService.GetUserId();
-        await _apiService.SwipeContentAsync(new ContentSwipeRequest
+        // Enviar al backend usando el endpoint /external que auto-crea el contenido
+        var userId = _sessionService.CurrentUserId;
+        await _apiService.LikeExternalAsync(new ExternalLikeRequest
         {
             UserId = userId,
-            ContentId = 0, // El backend debería buscar/crear por ExternalId
-            State = ContentState.Liked,
-            Punctuation = (int)(item.Rating * 10)
+            ExternalId = item.ExternalId,
+            Title = item.Title,
+            ImageUrl = item.ImageUrl,
+            State = ContentState.Liked
         });
 
         // Avanzar al siguiente en swipe mode
@@ -144,13 +145,14 @@ public partial class OnboardingViewModel : ObservableObject
     {
         if (item == null) return;
 
-        var userId = _sessionService.GetUserId();
-        await _apiService.SwipeContentAsync(new ContentSwipeRequest
+        var userId = _sessionService.CurrentUserId;
+        await _apiService.LikeExternalAsync(new ExternalLikeRequest
         {
             UserId = userId,
-            ContentId = 0,
-            State = ContentState.Disliked,
-            Punctuation = 0
+            ExternalId = item.ExternalId,
+            Title = item.Title,
+            ImageUrl = item.ImageUrl,
+            State = ContentState.Disliked
         });
 
         AdvanceSwipeQueue();

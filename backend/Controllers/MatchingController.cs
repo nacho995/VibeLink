@@ -19,10 +19,18 @@ public class MatchingController : ControllerBase
     [HttpGet("{userId}")]
     public async Task<ActionResult<IEnumerable<object>>> GetMatches(int userId)
     {
-        // 1. Obtener todos los usuarios excepto el actual
-        var usuarios = await _context.Users.Where(u => u.Id != userId).ToListAsync();
+        // 1. Obtener IDs de usuarios ya swipeados
+        var swipedUserIds = await _context.Swipes
+            .Where(s => s.UserId == userId)
+            .Select(s => s.MatchingUserId)
+            .ToListAsync();
 
-        // 2. Para cada usuario, calcular compatibilidad
+        // 2. Obtener todos los usuarios excepto el actual y los ya swipeados
+        var usuarios = await _context.Users
+            .Where(u => u.Id != userId && !swipedUserIds.Contains(u.Id))
+            .ToListAsync();
+
+        // 3. Para cada usuario, calcular compatibilidad
         var resultados = new List<object>();
         foreach (var usuario in usuarios)
         {
@@ -41,7 +49,7 @@ public class MatchingController : ControllerBase
                 Compatibilidad = compatibilidad
             });
         }
-        // 3. Ordenar y devolver
+        // 4. Ordenar y devolver
         var sorted = resultados.OrderByDescending(r => ((dynamic)r).Compatibilidad).ToList();
 
         return Ok(sorted);
